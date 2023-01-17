@@ -1,51 +1,47 @@
-import json
 import time
 import math
-import random
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
 from pathlib import Path
-from datetime import datetime
-from argparse import ArgumentParser
 
 import torch
-import torch.nn as nn
 from torch.optim import AdamW
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import DataLoader
 
 from model import Model
-from transformers import get_linear_schedule_with_warmup
-from transformers.trainer_pt_utils import get_parameter_names
-from transformers.optimization import Adafactor, get_scheduler
+# from transformers import get_linear_schedule_with_warmup
+# from transformers.trainer_pt_utils import get_parameter_names
+from transformers.optimization import get_scheduler
 
 from sklearn.metrics import accuracy_score, f1_score
 
 from persian_ds import PersianDataset
-from custom_parser import my_parser
-
-import os
-os.environ["PYTORCH_CUDA_ALLOC_CONF"] = 'max_split_size_mb:256'
+from Utils.custom_parser import my_parser
 
 
+# import os
+# os.environ["PYTORCH_CUDA_ALLOC_CONF"] = 'max_split_size_mb:256'
 
-def configure_dataloaders(json_path_train, json_path_valid, json_path_test, train_batch_size=4, eval_batch_size=4, test_batch_size=4, shuffle=False, sep_token=None, input_format=0):
+
+
+# def configure_dataloaders(json_path_train, json_path_valid, json_path_test, train_batch_size=4, eval_batch_size=4, test_batch_size=4, shuffle=False, sep_token=None, input_format=0):
     
-    # json_path_train = "/content/TEAM/data/persian/train.jsonl"
-    # json_path_valid = "/content/TEAM/data/persian/valid.jsonl"
-    # json_path_test = "/content/TEAM/data/persian/test.jsonl"
+#     json_path_train = "/content/TEAM/data/persian/train.jsonl"
+#     json_path_valid = "/content/TEAM/data/persian/valid.jsonl"
+#     json_path_test = "/content/TEAM/data/persian/test.jsonl"
 
-    train_dataset = PersianDataset(json_path_train, sep_token=sep_token, input_format=input_format, shuffle=True)
-    train_loader = DataLoader(train_dataset, shuffle=shuffle, batch_size=train_batch_size,
-                              collate_fn=train_dataset.collate_fn)
+#     train_dataset = PersianDataset(json_path_train, sep_token=sep_token, input_format=input_format, shuffle=True)
+#     train_loader = DataLoader(train_dataset, shuffle=shuffle, batch_size=train_batch_size,
+#                               collate_fn=train_dataset.collate_fn)
 
-    val_dataset = PersianDataset(json_path_valid, sep_token=sep_token, input_format=input_format, shuffle=False)
-    val_loader = DataLoader(val_dataset, shuffle=False, batch_size=eval_batch_size, collate_fn=val_dataset.collate_fn)
+#     val_dataset = PersianDataset(json_path_valid, sep_token=sep_token, input_format=input_format, shuffle=False)
+#     val_loader = DataLoader(val_dataset, shuffle=False, batch_size=eval_batch_size, collate_fn=val_dataset.collate_fn)
 
-    test_dataset = PersianDataset(json_path_test, sep_token=sep_token, input_format=input_format, shuffle=False)
-    test_loader = DataLoader(test_dataset, shuffle=False, batch_size=test_batch_size, collate_fn=test_dataset.collate_fn)
+#     test_dataset = PersianDataset(json_path_test, sep_token=sep_token, input_format=input_format, shuffle=False)
+#     test_loader = DataLoader(test_dataset, shuffle=False, batch_size=test_batch_size, collate_fn=test_dataset.collate_fn)
 
-    return train_loader, val_loader, test_loader
+#     return train_loader, val_loader, test_loader
 
 
 def configure_optimizer(model, args):
@@ -165,9 +161,9 @@ if __name__ == "__main__":
 
     optimizer = configure_optimizer(model, args)
 
-    # json_path_train = "/content/TEAM/data/persian/train.jsonl"
-    # json_path_valid = "/content/TEAM/data/persian/valid.jsonl"
-    # json_path_test = "/content/TEAM/data/persian/test.jsonl"
+    # json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
+    # json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
+    # json_path_test = "/content/DNLP_project/data/persian/test.jsonl"
 
     json_path_train = "data/persian/train.jsonl"
     json_path_valid = "data/persian/valid.jsonl"
@@ -225,17 +221,17 @@ if __name__ == "__main__":
     vars(args)["exp_id"] = exp_id
     rs = "Acc: {}"
 
-    # path = "/content/TEAM/saved/persian_dataset/" + exp_id + "/" + name.replace("/", "-")
-    # Path("/content/TEAM/saved/persian_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
+    # path = "/content/DNLP_project/saved/persian_dataset/" + exp_id + "/" + name.replace("/", "-")
+    # Path("/content/DNLP_project/saved/persian_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
 
-    # fname = "/content/TEAM/saved/persian_dataset/" + exp_id + "/" + "args.txt"
+    # fname = "/content/DNLP_project/saved/persian_dataset/" + exp_id + "/" + "args.txt"
 
     # f = open(fname, "a")
     # f.write(str(args) + "\n\n")
     # f.close()
 
-    # Path("/content/TEAM/results/persian_dataset/").mkdir(parents=True, exist_ok=True)
-    # lf_name = "/content/TEAM/results/persian_dataset/" + name.replace("/", "-") + ".txt"
+    # Path("/content/DNLP_project/results/persian_dataset/").mkdir(parents=True, exist_ok=True)
+    # lf_name = "/content/DNLP_project/results/persian_dataset/" + name.replace("/", "-") + ".txt"
     # lf = open(lf_name, "a")
     # lf.write(str(args) + "\n\n")
     # lf.close()
