@@ -9,7 +9,7 @@ import torch
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 
-from model import Model
+
 # from transformers import get_linear_schedule_with_warmup
 # from transformers.trainer_pt_utils import get_parameter_names
 from transformers.optimization import get_scheduler
@@ -18,6 +18,9 @@ from sklearn.metrics import accuracy_score, f1_score
 
 from persian_ds import PersianDataset
 from Utils.custom_parser import my_parser
+
+# from model import Model
+from model_persian import Model
 
 
 # import os
