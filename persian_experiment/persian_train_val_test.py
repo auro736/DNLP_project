@@ -23,11 +23,6 @@ from Utils.custom_parser import my_parser
 from model_persian import Model
 
 
-# import os
-# os.environ["PYTORCH_CUDA_ALLOC_CONF"] = 'max_split_size_mb:256'
-
-
-
 # def configure_dataloaders(json_path_train, json_path_valid, json_path_test, train_batch_size=4, eval_batch_size=4, test_batch_size=4, shuffle=False, sep_token=None, input_format=0):
     
 #     json_path_train = "/content/TEAM/data/persian/train.jsonl"
@@ -164,13 +159,13 @@ if __name__ == "__main__":
 
     optimizer = configure_optimizer(model, args)
 
-    # json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
-    # json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
-    # json_path_test = "/content/DNLP_project/data/persian/test.jsonl"
+    json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
+    json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
+    json_path_test = "/content/DNLP_project/data/persian/test.jsonl"
 
-    json_path_train = "data/persian/train.jsonl"
-    json_path_valid = "data/persian/valid.jsonl"
-    json_path_test = "data/persian/test.jsonl"
+    # json_path_train = "data/persian/train.jsonl"
+    # json_path_valid = "data/persian/valid.jsonl"
+    # json_path_test = "data/persian/test.jsonl"
 
     train_dataset = PersianDataset(
                         json_path_train, 
@@ -224,35 +219,35 @@ if __name__ == "__main__":
     vars(args)["exp_id"] = exp_id
     rs = "Acc: {}"
 
-    # path = "/content/DNLP_project/saved/persian_dataset/" + exp_id + "/" + name.replace("/", "-")
-    # Path("/content/DNLP_project/saved/persian_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
+    path = "/content/DNLP_project/saved/persian_dataset/" + exp_id + "/" + name.replace("/", "-")
+    Path("/content/DNLP_project/saved/persian_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
 
-    # fname = "/content/DNLP_project/saved/persian_dataset/" + exp_id + "/" + "args.txt"
-
-    # f = open(fname, "a")
-    # f.write(str(args) + "\n\n")
-    # f.close()
-
-    # Path("/content/DNLP_project/results/persian_dataset/").mkdir(parents=True, exist_ok=True)
-    # lf_name = "/content/DNLP_project/results/persian_dataset/" + name.replace("/", "-") + ".txt"
-    # lf = open(lf_name, "a")
-    # lf.write(str(args) + "\n\n")
-    # lf.close()
-
-    path = "saved/persian_dataset/" + exp_id + "/" + name.replace("/", "-")
-    Path("saved/persian_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
-
-    fname = "saved/persian_dataset/" + exp_id + "/" + "args.txt"
+    fname = "/content/DNLP_project/saved/persian_dataset/" + exp_id + "/" + "args.txt"
 
     f = open(fname, "a")
     f.write(str(args) + "\n\n")
     f.close()
 
-    Path("results/persian_dataset/").mkdir(parents=True, exist_ok=True)
-    lf_name = "results/persian_dataset/" + name.replace("/", "-") + ".txt"
+    Path("/content/DNLP_project/results/persian_dataset/").mkdir(parents=True, exist_ok=True)
+    lf_name = "/content/DNLP_project/results/persian_dataset/" + name.replace("/", "-") + ".txt"
     lf = open(lf_name, "a")
     lf.write(str(args) + "\n\n")
     lf.close()
+
+    # path = "saved/persian_dataset/" + exp_id + "/" + name.replace("/", "-")
+    # Path("saved/persian_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
+
+    # fname = "saved/persian_dataset/" + exp_id + "/" + "args.txt"
+
+    # f = open(fname, "a")
+    # f.write(str(args) + "\n\n")
+    # f.close()
+
+    # Path("results/persian_dataset/").mkdir(parents=True, exist_ok=True)
+    # lf_name = "results/persian_dataset/" + name.replace("/", "-") + ".txt"
+    # lf = open(lf_name, "a")
+    # lf.write(str(args) + "\n\n")
+    # lf.close()
 
 
     for e in range(epochs):
