@@ -1,0 +1,27 @@
+Namespace(adam_epsilon=1e-08, bs=16, epochs=5, eval_bs=8, exp_id='1674047581', input_format='1', lr=3e-06, name='bert-base-multilingual-cased', num_choices=4, shuffle=False, warm_up_steps=0, wd=0.0)
+
+Epoch 1: Loss: Train 0.5695; Val 0.5625
+Classification Acc: Train 0.7431; Val 0.75
+Classification Macro F1: Train 0.4359; Val 0.4286
+Instance Acc: Val 0.2806
+
+Epoch 2: Loss: Train 0.5646; Val 0.5625
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.223
+
+Epoch 3: Loss: Train 0.5624; Val 0.5623
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.2518
+
+Epoch 4: Loss: Train 0.5628; Val 0.5623
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.2086
+
+Epoch 5: Loss: Train 0.5625; Val 0.5626
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.2302
+

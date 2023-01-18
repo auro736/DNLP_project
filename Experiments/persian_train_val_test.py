@@ -124,9 +124,9 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
     elif "Test" in split:
         all_labels_cls = [item for sublist in labels_cls for item in sublist]
 
-        # mapper = {0: "1", 1: "2", 2: "3", 3: "4"}
+        mapper = {0: "1", 1: "2", 2: "3", 3: "4"}
         instance_preds = [item for sublist in preds for item in sublist]
-        # instance_preds = [mapper[item] for item in instance_preds]
+        instance_preds = [mapper[item] for item in instance_preds]
         instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
 
         print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))

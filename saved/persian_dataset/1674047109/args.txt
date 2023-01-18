@@ -1,0 +1,27 @@
+Namespace(adam_epsilon=1e-08, bs=16, epochs=5, eval_bs=8, exp_id='1674047109', input_format='1', lr=0.0003, name='sharif-dal/dal-bert', num_choices=4, shuffle=False, warm_up_steps=0, wd=0.0)
+
+Epoch 1: Loss: Train 0.5729; Val 0.5625
+Classification Acc: Train 0.747; Val 0.75
+Classification Macro F1: Train 0.4321; Val 0.4286
+Instance Acc: Val 0.3022
+
+Epoch 2: Loss: Train 0.566; Val 0.5627
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.2662
+
+Epoch 3: Loss: Train 0.5665; Val 0.5624
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.2302
+
+Epoch 4: Loss: Train 0.5678; Val 0.5623
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.3094
+
+Epoch 5: Loss: Train 0.5681; Val 0.5628
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.2878
+
