@@ -16,11 +16,11 @@ from transformers.optimization import get_scheduler
 
 from sklearn.metrics import accuracy_score, f1_score
 
-from persian_ds import PersianDataset
-from custom_parser import my_parser
+from Utils.persian_ds import PersianDataset
+from Utils.custom_parser import my_parser
 
 # from model import Model
-from model_persian import Model
+from Models.persian_models import PersianModel
 
 
 # def configure_dataloaders(json_path_train, json_path_valid, json_path_test, train_batch_size=4, eval_batch_size=4, test_batch_size=4, shuffle=False, sep_token=None, input_format=0):
@@ -150,7 +150,7 @@ if __name__ == "__main__":
     vars(args)["num_choices"] = num_choices
     assert eval_batch_size % num_choices == 0, "Eval batch size should be a multiple of num choices, which is 4"
 
-    model = Model(
+    model = PersianModel(
         name=name,
         num_choices=num_choices
     ).cuda()
