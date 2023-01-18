@@ -132,6 +132,8 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
         print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
         return instance_preds
 
+def avg(list):
+    return round(sum(list)/len(list),4)
 
 if __name__ == "__main__":
 
@@ -249,10 +251,11 @@ if __name__ == "__main__":
     # lf.write(str(args) + "\n\n")
     # lf.close()
 
+    val_ins_acc_list = list()
 
     for e in range(epochs):
 
-        torch.cuda.empty_cache()
+        #torch.cuda.empty_cache()
 
         # train_loader, val_loader, test_loader = configure_dataloaders(json_path_train, json_path_valid, json_path_test,
         #                                                                 train_batch_size, eval_batch_size, test_batch_size, shuffle,
@@ -261,6 +264,8 @@ if __name__ == "__main__":
         train_loss, train_acc, train_f1 = train_or_eval_model(model, train_loader, optimizer, "Train")
         val_loss, val_acc, val_ins_acc, val_f1 = train_or_eval_model(model, val_loader, split="Val")
         test_preds = train_or_eval_model(model, test_loader, split="Test")
+
+        val_ins_acc_list.append(val_ins_acc)
 
         with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
             f.write("\n".join(list(test_preds)))
@@ -282,7 +287,11 @@ if __name__ == "__main__":
         f = open(fname, "a")
         f.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
         f.close()
+    
+    avg_ins_acc = f"Average Instance Accuracy Val: {avg(val_ins_acc_list)}"
+    print(avg_ins_acc)
 
     lf = open(lf_name, "a")
     lf.write("-" * 100 + "\n")
+    lf.write(avg_ins_acc + "\n")
     lf.close()

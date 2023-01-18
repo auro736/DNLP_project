@@ -17,11 +17,12 @@ class PersianModel(nn.Module):
         
         self.name = name
         self.num_choices = num_choices
-        self.model = BertForMaskedLM.from_pretrained(self.name)
-        self.tokenizer = BertTokenizer.from_pretrained(self.name)
 
-        # self.tokenizer = AutoTokenizer.from_pretrained(name, use_fast=True)
-        # self.model = AutoModelForSequenceClassification.from_pretrained(name)
+        # self.model = BertForMaskedLM.from_pretrained(self.name)
+        # self.tokenizer = BertTokenizer.from_pretrained(self.name)
+
+        self.tokenizer = AutoTokenizer.from_pretrained(name, use_fast=True)
+        self.model = AutoModelForSequenceClassification.from_pretrained(name)
         
         self.max_length = 512
         
@@ -38,7 +39,10 @@ class PersianModel(nn.Module):
         # elif "aristo" in name:
         #     self.hidden_size = 768
 
-        self.hidden_size = 768
+        if "base" in name:
+            self.hidden_size = 768
+        elif "sharif" in name:
+            self.hidden_size = 768
             
         self.ce_loss_func = nn.CrossEntropyLoss()
         self.scorer = nn.Linear(self.hidden_size, 1)

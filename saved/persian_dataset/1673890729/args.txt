@@ -1,2 +1,0 @@
-Namespace(lr=3e-06, wd=0.0, warm_up_steps=0, adam_epsilon=1e-08, bs=2, eval_bs=8, epochs=2, name='roberta-large', shuffle=False, input_format='1', num_choices=4, exp_id='1673890729')
-
