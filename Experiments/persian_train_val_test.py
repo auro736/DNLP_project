@@ -1,6 +1,7 @@
 import time
 import math
 import numpy as np
+from os import path
 import pandas as pd
 from tqdm import tqdm
 from pathlib import Path
@@ -55,6 +56,7 @@ def configure_optimizer(model, args):
         },
     ]
     optimizer = AdamW(optimizer_grouped_parameters, lr=args.lr, eps=args.adam_epsilon)
+
     return optimizer
 
 
@@ -128,7 +130,6 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
         instance_preds = [item for sublist in preds for item in sublist]
         instance_preds = [mapper[item] for item in instance_preds]
         instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
-
         print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
         return instance_preds
 
@@ -157,9 +158,19 @@ if __name__ == "__main__":
         num_choices=num_choices
     ).cuda()
 
+    model_ckp_path = f"content/DNLP_project/Experiments/Checpoints/{name}.pth"
+
+    if path.exists(model_ckp_path):
+        model.load_state_dict(model_ckp_path)
+
     sep_token = model.tokenizer.sep_token
 
+    opt_ckp_path = f"content/DNLP_project/Experiments/Checpoints/{name}_optimizer.pth"
+
     optimizer = configure_optimizer(model, args)
+
+    if path.exists(opt_ckp_path):
+        model.load_state_dict(opt_ckp_path)
 
     json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
     json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
@@ -261,7 +272,7 @@ if __name__ == "__main__":
         #                                                                 train_batch_size, eval_batch_size, test_batch_size, shuffle,
         #                                                               sep_token=sep_token, input_format=input_format)
         
-        train_loss, train_acc, train_f1 = train_or_eval_model(model, train_loader, optimizer, "Train")
+        train_loss, train_acc, train_f1 = train_or_eval_model(model, train_loader, optimizer, split = "Train")
         val_loss, val_acc, val_ins_acc, val_f1 = train_or_eval_model(model, val_loader, split="Val")
         test_preds = train_or_eval_model(model, test_loader, split="Test")
 
@@ -287,6 +298,9 @@ if __name__ == "__main__":
         f = open(fname, "a")
         f.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
         f.close()
+
+    torch.save(model.state_dict(), model_ckp_path)
+    torch.save(optimizer.state_dict(), opt_ckp_path)
     
     avg_ins_acc = f"Average Instance Accuracy Val: {avg(val_ins_acc_list)}"
     print(avg_ins_acc)
