@@ -21,7 +21,7 @@ from Utils.persian_ds import PersianDataset
 from Utils.custom_parser import my_parser
 
 # from model import Model
-from Models.persian_models import PersianModel
+from Models.model import Model
 
 
 # def configure_dataloaders(json_path_train, json_path_valid, json_path_test, train_batch_size=4, eval_batch_size=4, test_batch_size=4, shuffle=False, sep_token=None, input_format=0):
@@ -153,24 +153,24 @@ if __name__ == "__main__":
     vars(args)["num_choices"] = num_choices
     assert eval_batch_size % num_choices == 0, "Eval batch size should be a multiple of num choices, which is 4"
 
-    model = PersianModel(
+    model = Model(
         name=name,
         num_choices=num_choices
     ).cuda()
 
-    model_ckp_path = f"content/DNLP_project/Experiments/Checkpoints/{name}.pth"
+    model_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/{name}.pth"
 
     if path.exists(model_ckp_path):
-        model.load_state_dict(model_ckp_path)
+        model.load_state_dict(torch.load(model_ckp_path))
 
     sep_token = model.tokenizer.sep_token
 
-    opt_ckp_path = f"content/DNLP_project/Experiments/Checkpoints/{name}_optimizer.pth"
+    opt_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/{name}_optimizer.pth"
 
     optimizer = configure_optimizer(model, args)
 
     if path.exists(opt_ckp_path):
-        model.load_state_dict(opt_ckp_path)
+        optimizer.load_state_dict(torch.load(opt_ckp_path))
 
     json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
     json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
@@ -274,12 +274,12 @@ if __name__ == "__main__":
         
         train_loss, train_acc, train_f1 = train_or_eval_model(model, train_loader, optimizer, split = "Train")
         val_loss, val_acc, val_ins_acc, val_f1 = train_or_eval_model(model, val_loader, split="Val")
-        test_preds = train_or_eval_model(model, test_loader, split="Test")
+        # test_preds = train_or_eval_model(model, test_loader, split="Test")
 
         val_ins_acc_list.append(val_ins_acc)
 
-        with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
-            f.write("\n".join(list(test_preds)))
+        # with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
+        #     f.write("\n".join(list(test_preds)))
 
         x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
         y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
@@ -304,6 +304,11 @@ if __name__ == "__main__":
     
     avg_ins_acc = f"Average Instance Accuracy Val: {avg(val_ins_acc_list)}"
     print(avg_ins_acc)
+
+    test_preds = train_or_eval_model(model, test_loader, split="Test")
+
+    with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
+            f.write("\n".join(list(test_preds)))
 
     lf = open(lf_name, "a")
     lf.write("-" * 100 + "\n")
