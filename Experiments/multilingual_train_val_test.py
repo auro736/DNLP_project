@@ -126,16 +126,18 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
     elif "Test" in split:
 
         all_labels_cls = [item for sublist in labels_cls for item in sublist]
-        
-        mapper = {0: "A", 1: "B", 2: "C", 3: "D"}
-        instance_preds = [item for sublist in preds for item in sublist]
-        instance_preds = [mapper[item] for item in instance_preds]
-        #instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
-        print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
 
+       
+        instance_preds = [item for sublist in preds for item in sublist]
         instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
         instance_acc = round(accuracy_score(instance_labels, instance_preds), 4)
         print("Test Instance Accuracy :", instance_acc)
+
+        mapper = {0: "A", 1: "B", 2: "C", 3: "D"}
+        instance_preds = [mapper[item] for item in instance_preds]
+        print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
+
+        
 
         return instance_preds
 
@@ -179,7 +181,7 @@ if __name__ == "__main__":
         optimizer.load_state_dict(torch.load(opt_ckp_path))
 
     json_path_train = "/content/DNLP_project/data/multilingual/train.jsonl"
-    json_path_valid = "/content/DNLP_project/data/multilingual/valid.jsonl"
+    json_path_valid = "/content/DNLP_project/data/multilingual/dev.jsonl"
     json_path_test = "/content/DNLP_project/data/multilingual/test.jsonl"
 
     # json_path_train = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/multilingual/train.jsonl"
