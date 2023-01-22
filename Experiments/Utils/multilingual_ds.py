@@ -20,9 +20,15 @@ class MultilingualDataset(Dataset):
         x = open(f).readlines()
         
         if shuffle:
+            print("Dataset shuffled")
             random.shuffle(x)
         
-        self.corr_ans_ids = list()
+        #self.corr_ans_ids = list()
+
+        # c_3 = 0
+        # c_4 = 0
+        # c_5 = 0
+        # error = 0
 
         for line in x:
 
@@ -33,10 +39,19 @@ class MultilingualDataset(Dataset):
                 for network purposes we  need to have the number of choices fixed
                 aribitrary chosen as 4, so we proceed only if len(choices) == 4
             '''
-            choices = [a["text"] for a in instance["question"]["choices"] ]
-            
+            choices = [ a["text"] for a in instance["question"]["choices"] ]
+
+            # if len(choices) == 3:
+            #     c_3 += 1
+            # elif len(choices) == 4:
+            #     c_4 += 1
+            # elif len(choices) == 5:
+            #     c_5 += 1
+            # else:
+            #     error += 1
+
+            # messo 4 perchè per tutti gli split sono le domande di numero maggiore 
             if len(choices) == 4:
-            #if len(instance["candidates"]) == 4:
 
                 '''question'''
                 question = instance["question"]["stem"]
@@ -45,45 +60,67 @@ class MultilingualDataset(Dataset):
                 correct_answer_id = instance["answerKey"]
 
                 '''save also question question subject'''
-                category = instance["info"]["subject"]
+                #category = instance["info"]["subject"]
 
                 # METTERE ANCHE LINGUA???
 
                 '''create all the possible combinations (question, answer)'''
-                a1 = choices[0]
-                a2 = choices[1]
-                a3 = choices[2]
-                a4 = choices[3]
 
                 if input_format == "0":
-                    content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a1))
-                    content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a2))
-                    content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a3))
-                    content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a4))
+                    for c in choices:
+                        content.append("{} {}".format(question, c))
                 elif input_format == "1":
-                    content.append("{} \\n {} \\n {}".format(question, a1, category))
-                    content.append("{} \\n {} \\n {}".format(question, a2, category))
-                    content.append("{} \\n {} \\n {}".format(question, a3, category))
-                    content.append("{} \\n {} \\n {}".format(question, a4, category))
+                    for c in choices:
+                        content.append("{} \\n {}".format(question, c))
                 elif input_format == "2":
-                    content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a1))
-                    content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a2))
-                    content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a3))
-                    content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a4))
-                elif input_format == "3":
-                    content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a1, category, sep_token))
-                    content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a2, category, sep_token))
-                    content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a3, category, sep_token))
-                    content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a4, category, sep_token))
+                    for c in choices:
+                        content.append("{} {} {}".format(question, sep_token, c))
+                
+                answers = ["A", "B", "C", "D"]
+                y = [0, 0, 0, 0]
+                y[answers.index(correct_answer_id)] = 1
+                labels += y
 
-                if correct_answer_id == "A":
-                    labels += [1, 0, 0, 0]
-                elif correct_answer_id == "B":
-                    labels += [0, 1, 0, 0]
-                elif correct_answer_id == "C":
-                    labels += [0, 0, 1, 0]
-                elif correct_answer_id == "D":
-                    labels += [0, 0, 0, 1]
+        # print(f"3 risposte: {c_3}")
+        # print(f"4 risposte: {c_4}")
+        # print(f"5 risposte: {c_5}")
+        # print(f"errori: {error}")
+            
+
+                # a1 = choices[0]
+                # a2 = choices[1]
+                # a3 = choices[2]
+                # a4 = choices[3]
+
+                # if input_format == "0":
+                #     content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a1))
+                #     content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a2))
+                #     content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a3))
+                #     content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a4))
+                # elif input_format == "1":
+                #     content.append("{} \\n {} \\n {}".format(question, a1, category))
+                #     content.append("{} \\n {} \\n {}".format(question, a2, category))
+                #     content.append("{} \\n {} \\n {}".format(question, a3, category))
+                #     content.append("{} \\n {} \\n {}".format(question, a4, category))
+                # elif input_format == "2":
+                #     content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a1))
+                #     content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a2))
+                #     content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a3))
+                #     content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a4))
+                # elif input_format == "3":
+                #     content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a1, category, sep_token))
+                #     content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a2, category, sep_token))
+                #     content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a3, category, sep_token))
+                #     content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a4, category, sep_token))
+
+                # if correct_answer_id == "A":
+                #     labels += [1, 0, 0, 0]
+                # elif correct_answer_id == "B":
+                #     labels += [0, 1, 0, 0]
+                # elif correct_answer_id == "C":
+                #     labels += [0, 0, 1, 0]
+                # elif correct_answer_id == "D":
+                #     labels += [0, 0, 0, 1]
                 
         self.content, self.labels = content, labels
     

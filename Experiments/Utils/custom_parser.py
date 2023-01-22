@@ -69,7 +69,7 @@ def my_parser():
 
     parser.add_argument(
         '--input-format', 
-        default="1", 
+        default="0", 
         help="How to format the input data."
         )
 

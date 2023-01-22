@@ -1,0 +1,7 @@
+New test:
+	è il dataset test con le lingue che appaiono solo in test rimosse
+	11.226 linee
+Train:
+	7.961 linee 
+Dev:
+	2.673 linee

@@ -18,9 +18,6 @@ class Model(nn.Module):
         self.name = name
         self.num_choices = num_choices
 
-        # self.model = BertForMaskedLM.from_pretrained(self.name)
-        # self.tokenizer = BertTokenizer.from_pretrained(self.name)
-
         self.tokenizer = AutoTokenizer.from_pretrained(name, use_fast=True)
         self.model = AutoModelForSequenceClassification.from_pretrained(name)
         

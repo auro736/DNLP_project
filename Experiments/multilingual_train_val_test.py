@@ -104,6 +104,7 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
     avg_loss = round(np.mean(losses), 4)
 
     if split == "Train":
+
         all_preds_cls = [item for sublist in preds_cls for item in sublist]
         all_labels_cls = [item for sublist in labels_cls for item in sublist]
         acc = round(accuracy_score(all_labels_cls, all_preds_cls), 4)
@@ -112,6 +113,7 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
         return avg_loss, acc, f1
 
     elif split == "Val":
+
         all_preds_cls = [item for sublist in preds_cls for item in sublist]
         all_labels_cls = [item for sublist in labels_cls for item in sublist]
         acc = round(accuracy_score(all_labels_cls, all_preds_cls), 4)
@@ -137,11 +139,10 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
         instance_preds = [mapper[item] for item in instance_preds]
         print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
 
-        
-
         return instance_preds
 
 def avg(list):
+
     return round(sum(list)/len(list),4)
 
 if __name__ == "__main__":
@@ -180,9 +181,16 @@ if __name__ == "__main__":
     if path.exists(opt_ckp_path):
         optimizer.load_state_dict(torch.load(opt_ckp_path))
 
-    json_path_train = "/content/DNLP_project/data/multilingual/train.jsonl"
+    # json_path_train = "/content/DNLP_project/data/multilingual/train.jsonl"
+    # json_path_valid = "/content/DNLP_project/data/multilingual/dev.jsonl"
+    # json_path_test = "/content/DNLP_project/data/multilingual/test.jsonl"
+
+    '''
+        Prova con test e train files invertiti
+    '''
+    json_path_train = "/content/DNLP_project/data/multilingual/new_test.jsonl"
     json_path_valid = "/content/DNLP_project/data/multilingual/dev.jsonl"
-    json_path_test = "/content/DNLP_project/data/multilingual/test.jsonl"
+    json_path_test = "/content/DNLP_project/data/multilingual/train.jsonl"
 
     # json_path_train = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/multilingual/train.jsonl"
     # json_path_valid = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/multilingual/dev.jsonl"
@@ -231,10 +239,10 @@ if __name__ == "__main__":
                         )
 
 
-    if "/" in name:
-        sp = name[name.index("/") + 1:]
-    else:
-        sp = name
+    # if "/" in name:
+    #     sp = name[name.index("/") + 1:]
+    # else:
+    #     sp = name
 
     exp_id = str(int(time.time()))
     vars(args)["exp_id"] = exp_id
