@@ -60,7 +60,9 @@ class MultilingualDataset(Dataset):
                 correct_answer_id = instance["answerKey"]
 
                 '''save also question question subject'''
-                #category = instance["info"]["subject"]
+                subject = instance["info"]["subject"]
+
+                language = instance["info"]["language"]
 
                 # METTERE ANCHE LINGUA???
 
@@ -68,7 +70,7 @@ class MultilingualDataset(Dataset):
 
                 if input_format == "0":
                     for c in choices:
-                        content.append("{} {}".format(question, c))
+                        content.append("{} {} {} {}".format(subject, language, question, c))
                 elif input_format == "1":
                     for c in choices:
                         content.append("{} \\n {}".format(question, c))
