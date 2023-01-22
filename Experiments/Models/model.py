@@ -38,6 +38,8 @@ class Model(nn.Module):
 
         if "base" in name:
             self.hidden_size = 768
+        elif "large" in name:
+            self.hidden_sixe = 1024
         elif "sharif" in name:
             self.hidden_size = 768
             
