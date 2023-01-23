@@ -1,5 +1,6 @@
 import json
 import random
+random.seed(129864)
 import pandas as pd
 
 from torch.utils.data import Dataset

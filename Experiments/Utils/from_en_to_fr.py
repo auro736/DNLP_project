@@ -6,6 +6,8 @@ from transformers import pipeline
 
 def eng_to_fr(file_path, split):
 
+    print("Split: ",split)
+
     x = open(file_path).readlines()
     en_fr_translator = pipeline("translation_en_to_fr")
     
@@ -53,8 +55,8 @@ if __name__ == "__main__":
     # json_path_test = "/content/DNLP_project/data/qasc/test.jsonl"
 
     #eng_to_fr(json_path_train,split = "Train")
-    eng_to_fr(json_path_valid,split = "Dev")
-    #eng_to_fr(json_path_test,split = "Test")
+    #eng_to_fr(json_path_valid,split = "Dev")
+    eng_to_fr(json_path_test,split = "Test")
 
 
        

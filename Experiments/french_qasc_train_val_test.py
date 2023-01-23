@@ -17,7 +17,7 @@ from transformers.optimization import get_scheduler
 
 from sklearn.metrics import accuracy_score, f1_score
 
-from Ds.multilingual_ds import MultilingualDataset
+from Ds.french_ds import FrenchQascDataset
 from Utils.custom_parser import my_parser
 
 # from model import Model
@@ -181,36 +181,29 @@ if __name__ == "__main__":
     if path.exists(opt_ckp_path):
         optimizer.load_state_dict(torch.load(opt_ckp_path))
 
-    # json_path_train = "/content/DNLP_project/data/multilingual/train.jsonl"
-    # json_path_valid = "/content/DNLP_project/data/multilingual/dev.jsonl"
-    # json_path_test = "/content/DNLP_project/data/multilingual/test.jsonl"
+    json_path_train = "/content/DNLP_project/data/qasc/FR/train_FR.jsonl"
+    json_path_valid = "/content/DNLP_project/data/qasc/FR/dev_FR.jsonl"
+    json_path_test = "/content/DNLP_project/data/qasc/FR/test_FR.jsonl"
 
-    '''
-        Prova con test e train files invertiti
-    '''
-    json_path_train = "/content/DNLP_project/data/multilingual/new_test.jsonl"
-    json_path_valid = "/content/DNLP_project/data/multilingual/dev.jsonl"
-    json_path_test = "/content/DNLP_project/data/multilingual/train.jsonl"
+    # json_path_train = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/train_FR.jsonl"
+    # json_path_valid = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/dev_FR.jsonl"
+    # json_path_test = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/test_FR.jsonl"
 
-    # json_path_train = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/multilingual/train.jsonl"
-    # json_path_valid = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/multilingual/dev.jsonl"
-    # json_path_test = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/multilingual/test.jsonl"
-
-    train_dataset = MultilingualDataset(
+    train_dataset = FrenchQascDataset(
                         json_path_train, 
                         sep_token=sep_token, 
                         input_format=input_format, 
                         shuffle=True
                         )
     
-    val_dataset = MultilingualDataset(
+    val_dataset = FrenchQascDataset(
                         json_path_valid, 
                         sep_token=sep_token, 
                         input_format=input_format, 
                         shuffle=False
                         )
 
-    test_dataset = MultilingualDataset(
+    test_dataset = FrenchQascDataset(
                         json_path_test, 
                         sep_token=sep_token, 
                         input_format=input_format, 
@@ -238,42 +231,36 @@ if __name__ == "__main__":
                         collate_fn=test_dataset.collate_fn
                         )
 
-
-    # if "/" in name:
-    #     sp = name[name.index("/") + 1:]
-    # else:
-    #     sp = name
-
     exp_id = str(int(time.time()))
     vars(args)["exp_id"] = exp_id
     rs = "Acc: {}"
 
-    path = "/content/DNLP_project/saved/multilingual_dataset/" + exp_id + "/" + name.replace("/", "-")
-    Path("/content/DNLP_project/saved/multilingual_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
+    path = "/content/DNLP_project/saved/french_qasc_dataset/" + exp_id + "/" + name.replace("/", "-")
+    Path("/content/DNLP_project/saved/french_qasc_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
 
-    fname = "/content/DNLP_project/saved/multilingual_dataset/" + exp_id + "/" + "args.txt"
+    fname = "/content/DNLP_project/saved/french_qasc_dataset/" + exp_id + "/" + "args.txt"
 
     f = open(fname, "a")
     f.write(str(args) + "\n\n")
     f.close()
 
-    Path("/content/DNLP_project/results/multilingual_dataset/").mkdir(parents=True, exist_ok=True)
-    lf_name = "/content/DNLP_project/results/multilingual_dataset/" + name.replace("/", "-") + ".txt"
+    Path("/content/DNLP_project/results/french_qasc_dataset/").mkdir(parents=True, exist_ok=True)
+    lf_name = "/content/DNLP_project/results/french_qasc_dataset/" + name.replace("/", "-") + ".txt"
     lf = open(lf_name, "a")
     lf.write(str(args) + "\n\n")
     lf.close()
 
-    # path = "saved/multilingual_dataset/" + exp_id + "/" + name.replace("/", "-")
-    # Path("saved/multilingual_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
+    # path = "saved/french_qasc_dataset/" + exp_id + "/" + name.replace("/", "-")
+    # Path("saved/french_qasc_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
 
-    # fname = "saved/multilingual_dataset/" + exp_id + "/" + "args.txt"
+    # fname = "saved/french_qasc_dataset/" + exp_id + "/" + "args.txt"
 
     # f = open(fname, "a")
     # f.write(str(args) + "\n\n")
     # f.close()
 
-    # Path("results/multilingual_dataset/").mkdir(parents=True, exist_ok=True)
-    # lf_name = "results/multilingual_dataset/" + name.replace("/", "-") + ".txt"
+    # Path("results/french_qasc_dataset/").mkdir(parents=True, exist_ok=True)
+    # lf_name = "results/french_qasc_dataset/" + name.replace("/", "-") + ".txt"
     # lf = open(lf_name, "a")
     # lf.write(str(args) + "\n\n")
     # lf.close()

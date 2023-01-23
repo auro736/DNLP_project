@@ -17,7 +17,7 @@ from transformers.optimization import get_scheduler
 
 from sklearn.metrics import accuracy_score, f1_score
 
-from Utils.persian_ds import PersianDataset
+from Ds.persian_ds import PersianDataset
 from Utils.custom_parser import my_parser
 
 # from model import Model
