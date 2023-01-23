@@ -73,4 +73,10 @@ def my_parser():
         help="How to format the input data."
         )
 
+    parser.add_argument(
+        '--max-clarifications', 
+        default="3", 
+        help="Max number of clarification sentences for the piqa dataset."
+        )
+
     return parser.parse_args()

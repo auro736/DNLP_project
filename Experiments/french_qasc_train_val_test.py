@@ -158,7 +158,7 @@ if __name__ == "__main__":
     shuffle = args.shuffle
     input_format = args.input_format
 
-    num_choices = 4
+    num_choices = 8
     vars(args)["num_choices"] = num_choices
     assert eval_batch_size % num_choices == 0, "Eval batch size should be a multiple of num choices, which is 4"
 
