@@ -87,16 +87,16 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
         return avg_loss, acc, f1
 
     elif split == "Val":
-
+        
         all_preds_cls = [item for sublist in preds_cls for item in sublist]
         all_labels_cls = [item for sublist in labels_cls for item in sublist]
         acc = round(accuracy_score(all_labels_cls, all_preds_cls), 4)
         f1 = round(f1_score(all_labels_cls, all_preds_cls, average="macro"), 4)
-
+        
         instance_preds = [item for sublist in preds for item in sublist]
         instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
         instance_acc = round(accuracy_score(instance_labels, instance_preds), 4)
-
+        
         return avg_loss, acc, instance_acc, f1
 
     elif "Test" in split:
@@ -154,13 +154,13 @@ if __name__ == "__main__":
     if path.exists(opt_ckp_path):
         optimizer.load_state_dict(torch.load(opt_ckp_path))
 
-    # json_path_train = "/content/DNLP_project/data/qasc/FR/train_FR.jsonl"
-    # json_path_valid = "/content/DNLP_project/data/qasc/FR/dev_FR.jsonl"
-    # json_path_test = "/content/DNLP_project/data/qasc/FR/test_FR.jsonl"
+    json_path_train = "/content/DNLP_project/data/qasc/FR/train_FR.jsonl"
+    json_path_valid = "/content/DNLP_project/data/qasc/FR/dev_FR.jsonl"
+    json_path_test = "/content/DNLP_project/data/qasc/FR/test_FR.jsonl"
 
-    json_path_train = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/train_FR.jsonl"
-    json_path_valid = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/dev_FR.jsonl"
-    json_path_test = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/test_FR.jsonl"
+    # json_path_train = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/train_FR.jsonl"
+    # json_path_valid = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/dev_FR.jsonl"
+    # json_path_test = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/test_FR.jsonl"
 
     train_dataset = FrenchQascDataset(
                         json_path_train, 
