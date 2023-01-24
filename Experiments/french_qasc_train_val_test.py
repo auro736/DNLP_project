@@ -10,9 +10,6 @@ import torch
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 
-
-# from transformers import get_linear_schedule_with_warmup
-# from transformers.trainer_pt_utils import get_parameter_names
 from transformers.optimization import get_scheduler
 
 from sklearn.metrics import accuracy_score, f1_score
@@ -20,28 +17,7 @@ from sklearn.metrics import accuracy_score, f1_score
 from Ds.french_ds import FrenchQascDataset
 from Utils.custom_parser import my_parser
 
-# from model import Model
 from Models.model import Model
-
-
-# def configure_dataloaders(json_path_train, json_path_valid, json_path_test, train_batch_size=4, eval_batch_size=4, test_batch_size=4, shuffle=False, sep_token=None, input_format=0):
-    
-#     json_path_train = "/content/TEAM/data/persian/train.jsonl"
-#     json_path_valid = "/content/TEAM/data/persian/valid.jsonl"
-#     json_path_test = "/content/TEAM/data/persian/test.jsonl"
-
-#     train_dataset = PersianDataset(json_path_train, sep_token=sep_token, input_format=input_format, shuffle=True)
-#     train_loader = DataLoader(train_dataset, shuffle=shuffle, batch_size=train_batch_size,
-#                               collate_fn=train_dataset.collate_fn)
-
-#     val_dataset = PersianDataset(json_path_valid, sep_token=sep_token, input_format=input_format, shuffle=False)
-#     val_loader = DataLoader(val_dataset, shuffle=False, batch_size=eval_batch_size, collate_fn=val_dataset.collate_fn)
-
-#     test_dataset = PersianDataset(json_path_test, sep_token=sep_token, input_format=input_format, shuffle=False)
-#     test_loader = DataLoader(test_dataset, shuffle=False, batch_size=test_batch_size, collate_fn=test_dataset.collate_fn)
-
-#     return train_loader, val_loader, test_loader
-
 
 def configure_optimizer(model, args):
     no_decay = ["bias", "LayerNorm.weight"]
@@ -59,7 +35,6 @@ def configure_optimizer(model, args):
 
     return optimizer
 
-
 def configure_scheduler(optimizer, num_training_steps, args):
     warmup_steps = (
         args.warmup_steps
@@ -73,7 +48,6 @@ def configure_scheduler(optimizer, num_training_steps, args):
         num_training_steps=num_training_steps,
     )
     return lr_scheduler
-
 
 def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
 
@@ -128,14 +102,13 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
     elif "Test" in split:
 
         all_labels_cls = [item for sublist in labels_cls for item in sublist]
-
        
         instance_preds = [item for sublist in preds for item in sublist]
         instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
         instance_acc = round(accuracy_score(instance_labels, instance_preds), 4)
         print("Test Instance Accuracy :", instance_acc)
 
-        mapper = {0: "A", 1: "B", 2: "C", 3: "D"}
+        mapper = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F", 6: "G", 7: "H"}
         instance_preds = [mapper[item] for item in instance_preds]
         print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
 
@@ -181,13 +154,13 @@ if __name__ == "__main__":
     if path.exists(opt_ckp_path):
         optimizer.load_state_dict(torch.load(opt_ckp_path))
 
-    json_path_train = "/content/DNLP_project/data/qasc/FR/train_FR.jsonl"
-    json_path_valid = "/content/DNLP_project/data/qasc/FR/dev_FR.jsonl"
-    json_path_test = "/content/DNLP_project/data/qasc/FR/test_FR.jsonl"
+    # json_path_train = "/content/DNLP_project/data/qasc/FR/train_FR.jsonl"
+    # json_path_valid = "/content/DNLP_project/data/qasc/FR/dev_FR.jsonl"
+    # json_path_test = "/content/DNLP_project/data/qasc/FR/test_FR.jsonl"
 
-    # json_path_train = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/train_FR.jsonl"
-    # json_path_valid = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/dev_FR.jsonl"
-    # json_path_test = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/test_FR.jsonl"
+    json_path_train = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/train_FR.jsonl"
+    json_path_valid = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/dev_FR.jsonl"
+    json_path_test = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/FR/test_FR.jsonl"
 
     train_dataset = FrenchQascDataset(
                         json_path_train, 
@@ -269,20 +242,10 @@ if __name__ == "__main__":
 
     for e in range(epochs):
 
-        #torch.cuda.empty_cache()
-
-        # train_loader, val_loader, test_loader = configure_dataloaders(json_path_train, json_path_valid, json_path_test,
-        #                                                                 train_batch_size, eval_batch_size, test_batch_size, shuffle,
-        #                                                               sep_token=sep_token, input_format=input_format)
-        
         train_loss, train_acc, train_f1 = train_or_eval_model(model, train_loader, optimizer, split = "Train")
         val_loss, val_acc, val_ins_acc, val_f1 = train_or_eval_model(model, val_loader, split="Val")
-        # test_preds = train_or_eval_model(model, test_loader, split="Test")
-
+       
         val_ins_acc_list.append(val_ins_acc)
-
-        # with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
-        #     f.write("\n".join(list(test_preds)))
 
         x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
         y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
