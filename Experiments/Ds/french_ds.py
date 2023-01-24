@@ -51,10 +51,10 @@ class FrenchQascDataset(Dataset):
                 for c in choices:
                     content.append("{} {} {}".format(question, sep_token, c))
                 
-                answers = ["A", "B", "C", "D", "E", "F", "G", "H"]
-                y = [0, 0, 0, 0, 0, 0, 0, 0]
-                y[answers.index(l)] = 1
-                labels += y
+            answers = ["A", "B", "C", "D", "E", "F", "G", "H"]
+            y = [0, 0, 0, 0, 0, 0, 0, 0]
+            y[answers.index(l)] = 1
+            labels += y
                 
         self.content, self.labels = content, labels
     
