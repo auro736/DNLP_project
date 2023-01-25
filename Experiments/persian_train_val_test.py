@@ -125,12 +125,16 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
 
     elif "Test" in split:
         all_labels_cls = [item for sublist in labels_cls for item in sublist]
+       
+        instance_preds = [item for sublist in preds for item in sublist]
+        instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
+        instance_acc = round(accuracy_score(instance_labels, instance_preds), 4)
+        print("Test Instance Accuracy :", instance_acc)
 
         mapper = {0: "1", 1: "2", 2: "3", 3: "4"}
-        instance_preds = [item for sublist in preds for item in sublist]
         instance_preds = [mapper[item] for item in instance_preds]
-        instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
         print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
+
         return instance_preds
 
 def avg(list):
@@ -174,11 +178,15 @@ if __name__ == "__main__":
 
     json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
     json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
-    json_path_test = "/content/DNLP_project/data/persian/test.jsonl"
+    json_path_test_lit = "/content/DNLP_project/data/persian/test_lit.jsonl"
+    json_path_test_ck = "/content/DNLP_project/data/persian/test_ck.jsonl"
+    json_path_test_ml = "/content/DNLP_project/data/persian/test_ml.jsonl"
 
-    # json_path_train = "data/persian/train.jsonl"
-    # json_path_valid = "data/persian/valid.jsonl"
-    # json_path_test = "data/persian/test.jsonl"
+    # json_path_train = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/persian/train.jsonl"
+    # json_path_valid = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/persian/valid.jsonl"
+    # json_path_test_lit = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/persian/test_lit.jsonl"
+    # json_path_test_ck = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/persian/test_ck.jsonl"
+    # json_path_test_ml = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/persian/test_ml.jsonl"
 
     train_dataset = PersianDataset(
                         json_path_train, 
@@ -194,8 +202,22 @@ if __name__ == "__main__":
                         shuffle=False
                         )
 
-    test_dataset = PersianDataset(
-                        json_path_test, 
+    test_dataset_lit = PersianDataset(
+                        json_path_test_lit, 
+                        sep_token=sep_token, 
+                        input_format=input_format, 
+                        shuffle=False
+                        )
+    
+    test_dataset_ck = PersianDataset(
+                        json_path_test_ck, 
+                        sep_token=sep_token, 
+                        input_format=input_format, 
+                        shuffle=False
+                        )
+    
+    test_dataset_ml = PersianDataset(
+                        json_path_test_ml, 
                         sep_token=sep_token, 
                         input_format=input_format, 
                         shuffle=False
@@ -215,12 +237,26 @@ if __name__ == "__main__":
                         collate_fn=val_dataset.collate_fn
                         )
 
-    test_loader = DataLoader(
-                        test_dataset, 
+    test_loader_lit = DataLoader(
+                        test_dataset_lit, 
                         shuffle=False, 
                         batch_size=test_batch_size, 
-                        collate_fn=test_dataset.collate_fn
+                        collate_fn=test_dataset_lit.collate_fn
                         )
+
+    test_loader_ck = DataLoader(
+                        test_dataset_ck, 
+                        shuffle=False, 
+                        batch_size=test_batch_size, 
+                        collate_fn=test_dataset_ck.collate_fn
+                        )
+
+    test_loader_ml = DataLoader(
+                        test_dataset_ml, 
+                        shuffle=False, 
+                        batch_size=test_batch_size, 
+                        collate_fn=test_dataset_ml.collate_fn
+                        )                    
 
 
     if "/" in name:
@@ -305,12 +341,18 @@ if __name__ == "__main__":
     avg_ins_acc = f"Average Instance Accuracy Val: {avg(val_ins_acc_list)}"
     print(avg_ins_acc)
 
-    test_preds = train_or_eval_model(model, test_loader, split="Test")
+    print("Testing...")
+    print("Results for test LIT")
+    test_preds_lit = train_or_eval_model(model, test_loader_lit, split="Test")
+    print("Results for test CK")
+    test_preds_ck = train_or_eval_model(model, test_loader_ck, split="Test")
+    print("Results for test ML")
+    test_preds_ml = train_or_eval_model(model, test_loader_ml, split = "Test")
 
-    with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
-            f.write("\n".join(list(test_preds)))
+    # with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
+    #         f.write("\n".join(list(test_preds)))
 
     lf = open(lf_name, "a")
     lf.write("-" * 100 + "\n")
-    lf.write(avg_ins_acc + "\n")
+    #lf.write(avg_ins_acc + "\n")
     lf.close()

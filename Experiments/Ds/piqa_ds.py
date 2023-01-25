@@ -102,7 +102,8 @@ class ClarifiedPiqaDataset(Dataset):
 
             clarifications = [c[1] if len(c[1].split()) > 1 else " ".join((c)) for c in instance['clarifications']]
             clarifications = [c[0].upper() + c[1:] for c in clarifications] + [""]
-
+            
+            
             if len(clarifications) >= args.max_clarifications:
                 clarifications = random.sample(clarifications, args.max_clarifications)
 
