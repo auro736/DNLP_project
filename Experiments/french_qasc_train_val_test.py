@@ -238,14 +238,14 @@ if __name__ == "__main__":
     # lf.write(str(args) + "\n\n")
     # lf.close()
 
-    val_ins_acc_list = list()
+    #val_ins_acc_list = list()
 
     for e in range(epochs):
 
         train_loss, train_acc, train_f1 = train_or_eval_model(model, train_loader, optimizer, split = "Train")
         val_loss, val_acc, val_ins_acc, val_f1 = train_or_eval_model(model, val_loader, split="Val")
        
-        val_ins_acc_list.append(val_ins_acc)
+        #val_ins_acc_list.append(val_ins_acc)
 
         x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
         y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
@@ -268,15 +268,14 @@ if __name__ == "__main__":
     torch.save(model.state_dict(), model_ckp_path)
     torch.save(optimizer.state_dict(), opt_ckp_path)
     
-    avg_ins_acc = f"Average Instance Accuracy Val: {avg(val_ins_acc_list)}"
-    print(avg_ins_acc)
+    # avg_ins_acc = f"Average Instance Accuracy Val: {avg(val_ins_acc_list)}"
+    # print(avg_ins_acc)
 
-    test_preds = train_or_eval_model(model, test_loader, split="Test")
+    #test_preds = train_or_eval_model(model, test_loader, split="Test")
 
-    with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
-            f.write("\n".join(list(test_preds)))
+    # with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
+    #         f.write("\n".join(list(test_preds)))
 
     lf = open(lf_name, "a")
     lf.write("-" * 100 + "\n")
-    lf.write(avg_ins_acc + "\n")
     lf.close()

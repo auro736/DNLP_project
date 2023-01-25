@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     json_path_train = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/train.jsonl"
     json_path_valid = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/dev.jsonl"
-    json_path_test = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/test.jsonl"
+    json_path_test = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/qasc/mcq_test.jsonl"
 
     # json_path_train = "/content/DNLP_project/data/qasc/train.jsonl"
     # json_path_valid = "/content/DNLP_project/data/qasc/dev.jsonl"
