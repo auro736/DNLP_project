@@ -162,19 +162,19 @@ if __name__ == "__main__":
         num_choices=num_choices
     ).cuda()
 
-    model_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/{name}.pth"
+    # model_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/{name}.pth"
 
-    if path.exists(model_ckp_path):
-        model.load_state_dict(torch.load(model_ckp_path))
+    # if path.exists(model_ckp_path):
+    #     model.load_state_dict(torch.load(model_ckp_path))
 
     sep_token = model.tokenizer.sep_token
 
-    opt_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/{name}_optimizer.pth"
+    # opt_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/{name}_optimizer.pth"
 
     optimizer = configure_optimizer(model, args)
 
-    if path.exists(opt_ckp_path):
-        optimizer.load_state_dict(torch.load(opt_ckp_path))
+    # if path.exists(opt_ckp_path):
+    #     optimizer.load_state_dict(torch.load(opt_ckp_path))
 
     json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
     json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
