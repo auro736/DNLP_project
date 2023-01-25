@@ -335,8 +335,8 @@ if __name__ == "__main__":
         f.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
         f.close()
 
-    torch.save(model.state_dict(), model_ckp_path)
-    torch.save(optimizer.state_dict(), opt_ckp_path)
+    # torch.save(model.state_dict(), model_ckp_path)
+    # torch.save(optimizer.state_dict(), opt_ckp_path)
     
     avg_ins_acc = f"Average Instance Accuracy Val: {avg(val_ins_acc_list)}"
     print(avg_ins_acc)
