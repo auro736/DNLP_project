@@ -1,19 +1,9 @@
 import time
-import math
-import numpy as np
-from os import path
-import pandas as pd
-from tqdm import tqdm
 from pathlib import Path
 
 import torch
 torch.manual_seed(4899)
-from torch.optim import AdamW
 from torch.utils.data import DataLoader
-
-from transformers.optimization import get_scheduler
-
-from sklearn.metrics import accuracy_score, f1_score
 
 from Ds.persian_ds import PersianDataset
 

@@ -120,24 +120,20 @@ def test(model, dataloader, optimizer=None):
 
     #avg_loss = round(np.mean(losses), 4)
 
-    if args.num_choices == 4:
-        all_labels_cls = [item for sublist in labels_cls for item in sublist]
-        
-        instance_preds = [item for sublist in preds for item in sublist]
-        instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
-        instance_acc = round(accuracy_score(instance_labels, instance_preds), 4)
-        print("Test Instance Accuracy :", instance_acc)
-
-        mapper = {0: "1", 1: "2", 2: "3", 3: "4"}
-        instance_preds = [mapper[item] for item in instance_preds]
-        print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
     
-    elif args.num_choices == 2:
-        instance_preds = [item for sublist in preds for item in sublist]
-        instance_preds = [str(item) for item in instance_preds]
-        print ("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
+    all_labels_cls = [item for sublist in labels_cls for item in sublist]
+    
+    instance_preds = [item for sublist in preds for item in sublist]
+    instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
+    instance_acc = round(accuracy_score(instance_labels, instance_preds), 4)
+    print("Test Instance Accuracy :", instance_acc)
 
-        return instance_preds
+    if args.num_choices == 4:
+        mapper = {0: "1", 1: "2", 2: "3", 3: "4"}
+    elif args.num_choices == 2:
+        mapper = {0: "1", 1: "2"}
+    instance_preds = [mapper[item] for item in instance_preds]
+    print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
 
     return instance_preds, instance_acc
 
