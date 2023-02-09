@@ -16,106 +16,11 @@ from transformers.optimization import get_scheduler
 from sklearn.metrics import accuracy_score, f1_score
 
 from Ds.persian_ds import PersianDataset
+
 from Utils.custom_parser import my_parser
+from Utils.utils import *
 
 from Models.model import Model
-
-import optuna
-
-
-def configure_optimizer(model, args):
-    no_decay = ["bias", "LayerNorm.weight"]
-    optimizer_grouped_parameters = [
-        {
-            "params": [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)],
-            "weight_decay": args.wd,
-        },
-        {
-            "params": [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)],
-            "weight_decay": 0.0,
-        },
-    ]
-    optimizer = AdamW(optimizer_grouped_parameters, lr=args.lr, eps=args.adam_epsilon)
-
-    return optimizer
-
-
-def configure_scheduler(optimizer, num_training_steps, args):
-    warmup_steps = (
-        args.warmup_steps
-        if args.warmup_steps > 0
-        else math.ceil(num_training_steps * args.warmup_ratio)
-    )
-    lr_scheduler = get_scheduler(
-        args.lr_scheduler_type,
-        optimizer,
-        num_warmup_steps=warmup_steps,
-        num_training_steps=num_training_steps,
-    )
-    return lr_scheduler
-
-
-def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
-
-    losses, preds, preds_cls, labels_cls, = [], [], [], []
-
-    if split == "Train":
-        model.train()
-    else:
-        model.eval()
-
-    for batch in tqdm(dataloader, leave=False):
-        if split == "Train":
-            optimizer.zero_grad()
-
-        content, l_cls = batch
-        loss, p, p_cls = model(batch)
-
-        preds.append(p)
-        preds_cls.append(p_cls)
-        labels_cls.append(l_cls)
-
-        if split == "Train":
-            loss.backward()
-            optimizer.step()
-
-        losses.append(loss.item())
-
-    avg_loss = round(np.mean(losses), 4)
-
-    if split == "Train":
-        all_preds_cls = [item for sublist in preds_cls for item in sublist]
-        all_labels_cls = [item for sublist in labels_cls for item in sublist]
-        acc = round(accuracy_score(all_labels_cls, all_preds_cls), 4)
-        f1 = round(f1_score(all_labels_cls, all_preds_cls, average="macro"), 4)
-
-        return avg_loss, acc, f1
-
-    elif split == "Val":
-        all_preds_cls = [item for sublist in preds_cls for item in sublist]
-        all_labels_cls = [item for sublist in labels_cls for item in sublist]
-        acc = round(accuracy_score(all_labels_cls, all_preds_cls), 4)
-        f1 = round(f1_score(all_labels_cls, all_preds_cls, average="macro"), 4)
-
-        instance_preds = [item for sublist in preds for item in sublist]
-        instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
-        instance_acc = round(accuracy_score(instance_labels, instance_preds), 4)
-
-        return avg_loss, acc, instance_acc, f1
-
-    elif "Test" in split:
-        all_labels_cls = [item for sublist in labels_cls for item in sublist]
-       
-        instance_preds = [item for sublist in preds for item in sublist]
-        instance_labels = np.array(all_labels_cls).reshape(-1, args.num_choices).argmax(1)
-        instance_acc = round(accuracy_score(instance_labels, instance_preds), 4)
-        print("Test Instance Accuracy :", instance_acc)
-
-        mapper = {0: "1", 1: "2", 2: "3", 3: "4"}
-        instance_preds = [mapper[item] for item in instance_preds]
-        print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
-
-        return instance_preds, instance_acc
 
 
 if __name__ == "__main__":
@@ -140,31 +45,25 @@ if __name__ == "__main__":
         num_choices=num_choices
     ).cuda()
 
-    # model_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/{name}.pth"
+    name_path = name.replace("/","-")
+    model_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/persian/{name_path}.pth"
+    opt_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/persian/{name_path}_optimizer.pth"
 
     # if path.exists(model_ckp_path):
     #     model.load_state_dict(torch.load(model_ckp_path))
 
     sep_token = model.tokenizer.sep_token
 
-    # opt_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/{name}_optimizer.pth"
-
     optimizer = configure_optimizer(model, args)
 
-    # if path.exists(opt_ckp_path):
-    #     optimizer.load_state_dict(torch.load(opt_ckp_path))
+    if path.exists(opt_ckp_path):
+        optimizer.load_state_dict(torch.load(opt_ckp_path))
 
     json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
     json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
     json_path_test_lit = "/content/DNLP_project/data/persian/test_lit.jsonl"
     json_path_test_ck = "/content/DNLP_project/data/persian/test_ck.jsonl"
     json_path_test_ml = "/content/DNLP_project/data/persian/test_ml.jsonl"
-
-    # json_path_train = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/persian/train.jsonl"
-    # json_path_valid = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/persian/valid.jsonl"
-    # json_path_test_lit = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/persian/test_lit.jsonl"
-    # json_path_test_ck = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/persian/test_ck.jsonl"
-    # json_path_test_ml = "/mnt/c/Users/auror/Desktop/NUOVA REPO PROGETTO DNLP/DNLP_project/data/persian/test_ml.jsonl"
 
     train_dataset = PersianDataset(
                         json_path_train, 
@@ -237,104 +136,64 @@ if __name__ == "__main__":
                         )                    
 
 
-    if "/" in name:
-        sp = name[name.index("/") + 1:]
-    else:
-        sp = name
-
-    exp_id = str(int(time.time()))
-    vars(args)["exp_id"] = exp_id
-    rs = "Acc: {}"
-
-    # path = "/content/DNLP_project/log/persian/" + exp_id + "/" + name.replace("/", "-")
-    # Path("/content/DNLP_project/log/persian/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
-
-    # fname = "/content/DNLP_project/log/persian/" + exp_id + "/" + "args.txt"
-
-    # f = open(fname, "a")
-    # f.write(str(args) + "\n\n")
-    # f.close()
-
     Path("/content/DNLP_project/log/persian/").mkdir(parents=True, exist_ok=True)
     lf_name = "/content/DNLP_project/log/persian/" + name.replace("/", "-") + ".txt"
     lf = open(lf_name, "a")
     lf.write(str(args) + "\n\n")
     lf.close()
 
-    # path = "saved/persian_dataset/" + exp_id + "/" + name.replace("/", "-")
-    # Path("saved/persian_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
 
-    # fname = "saved/persian_dataset/" + exp_id + "/" + "args.txt"
+    if not path.exists(model_ckp_path) and not path.exists(opt_ckp_path):
+        print("Start training....")
+        start_time = time.time()
+        for e in range(epochs):
+            
+            train_loss, train_acc, train_f1 = train(model, train_loader, optimizer)
+            val_loss, val_acc, val_ins_acc, val_f1 = eval(model, val_loader)
 
-    # f = open(fname, "a")
-    # f.write(str(args) + "\n\n")
-    # f.close()
+            x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
+            y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
+            y2 = "Classification Macro F1: Train {}; Val {}".format(train_f1, val_f1)
+            z = "Instance Acc: Val {}".format(val_ins_acc)
 
-    # Path("results/persian_dataset/").mkdir(parents=True, exist_ok=True)
-    # lf_name = "results/persian_dataset/" + name.replace("/", "-") + ".txt"
-    # lf = open(lf_name, "a")
-    # lf.write(str(args) + "\n\n")
-    # lf.close()
+            print(x)
+            print(y1)
+            print(y2)
+            print(z)
 
-    #val_ins_acc_list = list()
+            lf = open(lf_name, "a")
+            lf.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
+            lf.close()
 
-    start_time = time.time()
-    for e in range(epochs):
-        
-        train_loss, train_acc, train_f1 = train_or_eval_model(model, train_loader, optimizer, split = "Train")
-        val_loss, val_acc, val_ins_acc, val_f1 = train_or_eval_model(model, val_loader, split="Val")
-
-        #val_ins_acc_list.append(val_ins_acc)
-
-        # with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
-        #     f.write("\n".join(list(test_preds)))
-
-        x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
-        y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
-        y2 = "Classification Macro F1: Train {}; Val {}".format(train_f1, val_f1)
-        z = "Instance Acc: Val {}".format(val_ins_acc)
-
-        print(x)
-        print(y1)
-        print(y2)
-        print(z)
-
+        training_time = time.time() - start_time
+        print('Training time:', training_time )
         lf = open(lf_name, "a")
-        lf.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
+        lf.write('Training time: {}'.format(training_time) + "\n")
         lf.close()
 
-        # f = open(fname, "a")
-        # f.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
-        # f.close()
-    
-    training_time = time.time() - start_time
-    print('Training time:', training_time )
-    lf = open(lf_name, "a")
-    lf.write('Training time: {}'.format(training_time) + "\n")
-    lf.close()
-
-    # torch.save(model.state_dict(), model_ckp_path)
-    # torch.save(optimizer.state_dict(), opt_ckp_path)
+        torch.save(model.state_dict(), model_ckp_path)
+        torch.save(optimizer.state_dict(), opt_ckp_path)
 
     print("Testing...")
 
+    if path.exists(model_ckp_path) and path.exists(opt_ckp_path):
+        model.load_state_dict(torch.load(model_ckp_path))
+        optimizer.load_state_dict(torch.load(opt_ckp_path))
+
     print("Results for test LIT")
     start_time = time.time()
-    test_preds_lit, ins_acc_lit = train_or_eval_model(model, test_loader_lit, split="Test")
+    test_preds_lit, ins_acc_lit = test(model, test_loader_lit)
     print('Execution time:', time.time() - start_time)
 
     print("Results for test CK")
     start_time = time.time()
-    test_preds_ck, ins_acc_ck = train_or_eval_model(model, test_loader_ck, split="Test")
+    test_preds_ck, ins_acc_ck = test(model, test_loader_ck)
     print('Execution time:', time.time() - start_time)
 
     print("Results for test ML")
     start_time = time.time()
-    test_preds_ml, ins_acc_ml  = train_or_eval_model(model, test_loader_ml, split = "Test")
+    test_preds_ml, ins_acc_ml  = test(model, test_loader_ml)
     print('Execution time:', time.time() - start_time)
-
-    # with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
-    #         f.write("\n".join(list(test_preds)))
 
     lf = open(lf_name, "a")
     lf.write("Instance Acc: Test LIT {}".format(ins_acc_lit)+"\n")
