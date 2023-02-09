@@ -2,7 +2,9 @@ import torch
 import torch.nn as nn
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-from transformers import BertForMaskedLM, BertTokenizer
+from transformers import logging
+
+logging.set_verbosity_warning()
 
 
 

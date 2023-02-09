@@ -19,10 +19,6 @@ from Utils.custom_parser import my_parser
 
 from Models.model import Model
 
-from transformers import logging
-
-logging.set_verbosity_warning()
-
 
 def configure_optimizer(model, args):
     no_decay = ["bias", "LayerNorm.weight"]
@@ -118,8 +114,6 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
 
         return instance_preds, instance_acc
 
-def avg(list):
-    return round(sum(list)/len(list),4)
 
 if __name__ == "__main__":
 
@@ -249,14 +243,14 @@ if __name__ == "__main__":
     vars(args)["exp_id"] = exp_id
     rs = "Acc: {}"
 
-    path = "/content/DNLP_project/log/persian/" + exp_id + "/" + name.replace("/", "-")
-    Path("/content/DNLP_project/log/persian/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
+    # path = "/content/DNLP_project/log/persian/" + exp_id + "/" + name.replace("/", "-")
+    # Path("/content/DNLP_project/log/persian/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
 
-    fname = "/content/DNLP_project/log/persian/" + exp_id + "/" + "args.txt"
+    # fname = "/content/DNLP_project/log/persian/" + exp_id + "/" + "args.txt"
 
-    f = open(fname, "a")
-    f.write(str(args) + "\n\n")
-    f.close()
+    # f = open(fname, "a")
+    # f.write(str(args) + "\n\n")
+    # f.close()
 
     Path("/content/DNLP_project/log/persian/").mkdir(parents=True, exist_ok=True)
     lf_name = "/content/DNLP_project/log/persian/" + name.replace("/", "-") + ".txt"
@@ -306,14 +300,14 @@ if __name__ == "__main__":
         lf.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
         lf.close()
 
-        f = open(fname, "a")
-        f.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
-        f.close()
+        # f = open(fname, "a")
+        # f.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
+        # f.close()
     
     training_time = time.time() - start_time
     print('Training time:', training_time )
     lf = open(lf_name, "a")
-    lf.write('Training time: {}'.format(training_time))
+    lf.write('Training time: {}'.format(training_time) + "\n")
     lf.close()
 
     # torch.save(model.state_dict(), model_ckp_path)
@@ -340,8 +334,8 @@ if __name__ == "__main__":
     #         f.write("\n".join(list(test_preds)))
 
     lf = open(lf_name, "a")
-    lf.write("Instance Acc: Test LIT {}".format(ins_acc_lit))
-    lf.write("Instance Acc: Test CK {}".format(ins_acc_ck))
-    lf.write("Instance Acc: Test ML {}".format(ins_acc_ml))
+    lf.write("Instance Acc: Test LIT {}".format(ins_acc_lit)+"\n")
+    lf.write("Instance Acc: Test CK {}".format(ins_acc_ck)+"\n")
+    lf.write("Instance Acc: Test ML {}".format(ins_acc_ml)+"\n")
     lf.write("-" * 100 + "\n")
     lf.close()
