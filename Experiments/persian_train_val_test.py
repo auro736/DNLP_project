@@ -10,9 +10,6 @@ import torch
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 
-
-# from transformers import get_linear_schedule_with_warmup
-# from transformers.trainer_pt_utils import get_parameter_names
 from transformers.optimization import get_scheduler
 
 from sklearn.metrics import accuracy_score, f1_score
@@ -20,27 +17,8 @@ from sklearn.metrics import accuracy_score, f1_score
 from Ds.persian_ds import PersianDataset
 from Utils.custom_parser import my_parser
 
-# from model import Model
+
 from Models.model import Model
-
-
-# def configure_dataloaders(json_path_train, json_path_valid, json_path_test, train_batch_size=4, eval_batch_size=4, test_batch_size=4, shuffle=False, sep_token=None, input_format=0):
-    
-#     json_path_train = "/content/TEAM/data/persian/train.jsonl"
-#     json_path_valid = "/content/TEAM/data/persian/valid.jsonl"
-#     json_path_test = "/content/TEAM/data/persian/test.jsonl"
-
-#     train_dataset = PersianDataset(json_path_train, sep_token=sep_token, input_format=input_format, shuffle=True)
-#     train_loader = DataLoader(train_dataset, shuffle=shuffle, batch_size=train_batch_size,
-#                               collate_fn=train_dataset.collate_fn)
-
-#     val_dataset = PersianDataset(json_path_valid, sep_token=sep_token, input_format=input_format, shuffle=False)
-#     val_loader = DataLoader(val_dataset, shuffle=False, batch_size=eval_batch_size, collate_fn=val_dataset.collate_fn)
-
-#     test_dataset = PersianDataset(json_path_test, sep_token=sep_token, input_format=input_format, shuffle=False)
-#     test_loader = DataLoader(test_dataset, shuffle=False, batch_size=test_batch_size, collate_fn=test_dataset.collate_fn)
-
-#     return train_loader, val_loader, test_loader
 
 
 def configure_optimizer(model, args):
@@ -135,7 +113,7 @@ def train_or_eval_model(model, dataloader, optimizer=None, split="Train"):
         instance_preds = [mapper[item] for item in instance_preds]
         print("Test preds frequency:", dict(pd.Series(instance_preds).value_counts()))
 
-        return instance_preds
+        return instance_preds, instance_acc
 
 def avg(list):
     return round(sum(list)/len(list),4)
@@ -268,17 +246,17 @@ if __name__ == "__main__":
     vars(args)["exp_id"] = exp_id
     rs = "Acc: {}"
 
-    path = "/content/DNLP_project/saved/persian_dataset/" + exp_id + "/" + name.replace("/", "-")
-    Path("/content/DNLP_project/saved/persian_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
+    # path = "/content/DNLP_project/saved/persian_dataset/" + exp_id + "/" + name.replace("/", "-")
+    # Path("/content/DNLP_project/saved/persian_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
 
-    fname = "/content/DNLP_project/saved/persian_dataset/" + exp_id + "/" + "args.txt"
+    fname = "/content/DNLP_project/log/persian/" + exp_id + "/" + "args.txt"
 
     f = open(fname, "a")
     f.write(str(args) + "\n\n")
     f.close()
 
-    Path("/content/DNLP_project/results/persian_dataset/").mkdir(parents=True, exist_ok=True)
-    lf_name = "/content/DNLP_project/results/persian_dataset/" + name.replace("/", "-") + ".txt"
+    Path("/content/DNLP_project/log/persian/").mkdir(parents=True, exist_ok=True)
+    lf_name = "/content/DNLP_project/log/persian/" + name.replace("/", "-") + ".txt"
     lf = open(lf_name, "a")
     lf.write(str(args) + "\n\n")
     lf.close()
@@ -298,21 +276,15 @@ if __name__ == "__main__":
     # lf.write(str(args) + "\n\n")
     # lf.close()
 
-    val_ins_acc_list = list()
+    #val_ins_acc_list = list()
 
+    start_time = time.time()
     for e in range(epochs):
-
-        #torch.cuda.empty_cache()
-
-        # train_loader, val_loader, test_loader = configure_dataloaders(json_path_train, json_path_valid, json_path_test,
-        #                                                                 train_batch_size, eval_batch_size, test_batch_size, shuffle,
-        #                                                               sep_token=sep_token, input_format=input_format)
         
         train_loss, train_acc, train_f1 = train_or_eval_model(model, train_loader, optimizer, split = "Train")
         val_loss, val_acc, val_ins_acc, val_f1 = train_or_eval_model(model, val_loader, split="Val")
-        # test_preds = train_or_eval_model(model, test_loader, split="Test")
 
-        val_ins_acc_list.append(val_ins_acc)
+        #val_ins_acc_list.append(val_ins_acc)
 
         # with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
         #     f.write("\n".join(list(test_preds)))
@@ -334,25 +306,39 @@ if __name__ == "__main__":
         f = open(fname, "a")
         f.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
         f.close()
+    
+    training_time = time.time() - start_time
+    print('Training time:', training_time )
+    lf = open(lf_name, "a")
+    lf.write('Training time: {}'.format(training_time))
+    lf.close()
 
     # torch.save(model.state_dict(), model_ckp_path)
     # torch.save(optimizer.state_dict(), opt_ckp_path)
-    
-    avg_ins_acc = f"Average Instance Accuracy Val: {avg(val_ins_acc_list)}"
-    print(avg_ins_acc)
 
     print("Testing...")
+
     print("Results for test LIT")
-    test_preds_lit = train_or_eval_model(model, test_loader_lit, split="Test")
+    start_time = time.time()
+    test_preds_lit, ins_acc_lit = train_or_eval_model(model, test_loader_lit, split="Test")
+    print('Execution time:', time.time() - start_time)
+
     print("Results for test CK")
-    test_preds_ck = train_or_eval_model(model, test_loader_ck, split="Test")
+    start_time = time.time()
+    test_preds_ck, ins_acc_ck = train_or_eval_model(model, test_loader_ck, split="Test")
+    print('Execution time:', time.time() - start_time)
+
     print("Results for test ML")
-    test_preds_ml = train_or_eval_model(model, test_loader_ml, split = "Test")
+    start_time = time.time()
+    test_preds_ml, ins_acc_ml  = train_or_eval_model(model, test_loader_ml, split = "Test")
+    print('Execution time:', time.time() - start_time)
 
     # with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
     #         f.write("\n".join(list(test_preds)))
 
     lf = open(lf_name, "a")
+    lf.write("Instance Acc: Test LIT {}".format(ins_acc_lit))
+    lf.write("Instance Acc: Test CK {}".format(ins_acc_ck))
+    lf.write("Instance Acc: Test ML {}".format(ins_acc_ml))
     lf.write("-" * 100 + "\n")
-    #lf.write(avg_ins_acc + "\n")
     lf.close()
