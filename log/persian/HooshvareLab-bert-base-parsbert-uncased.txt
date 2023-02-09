@@ -1,0 +1,22 @@
+Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, exp_id='1675954761', input_format='0', lr=3e-05, max_clarifications=3, name='HooshvareLab/bert-base-parsbert-uncased', num_choices=4, shuffle=False, warm_up_steps=0, wd=0.0)
+
+Epoch 1: Loss: Train 0.5698; Val 0.563
+Classification Acc: Train 0.7484; Val 0.75
+Classification Macro F1: Train 0.4311; Val 0.4286
+Instance Acc: Val 0.2446
+
+Epoch 2: Loss: Train 0.5649; Val 0.5624
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.2302
+
+Epoch 3: Loss: Train 0.5653; Val 0.5594
+Classification Acc: Train 0.7498; Val 0.75
+Classification Macro F1: Train 0.4285; Val 0.4286
+Instance Acc: Val 0.3381
+
+Training time: 201.79769730567932
+Instance Acc: Test LIT 0.3229
+Instance Acc: Test CK 0.2914
+Instance Acc: Test ML 0.3343
+----------------------------------------------------------------------------------------------------

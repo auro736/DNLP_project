@@ -20,6 +20,8 @@ from Utils.custom_parser import my_parser
 
 from Models.model import Model
 
+import optuna
+
 
 def configure_optimizer(model, args):
     no_decay = ["bias", "LayerNorm.weight"]
