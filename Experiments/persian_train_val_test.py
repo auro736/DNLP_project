@@ -56,8 +56,8 @@ if __name__ == "__main__":
 
     optimizer = configure_optimizer(model, args)
 
-    if path.exists(opt_ckp_path):
-        optimizer.load_state_dict(torch.load(opt_ckp_path))
+    # if path.exists(opt_ckp_path):
+    #     optimizer.load_state_dict(torch.load(opt_ckp_path))
 
     json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
     json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
@@ -143,42 +143,42 @@ if __name__ == "__main__":
     lf.close()
 
 
-    if not path.exists(model_ckp_path) and not path.exists(opt_ckp_path):
-        print("Start training....")
-        start_time = time.time()
-        for e in range(epochs):
-            
-            train_loss, train_acc, train_f1 = train(model, train_loader, optimizer)
-            val_loss, val_acc, val_ins_acc, val_f1 = eval(model, val_loader)
+    # if not path.exists(model_ckp_path) and not path.exists(opt_ckp_path):
+    print("Start training....")
+    start_time = time.time()
+    for e in range(epochs):
+        
+        train_loss, train_acc, train_f1 = train(model, train_loader, optimizer)
+        val_loss, val_acc, val_ins_acc, val_f1 = eval(model, val_loader)
 
-            x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
-            y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
-            y2 = "Classification Macro F1: Train {}; Val {}".format(train_f1, val_f1)
-            z = "Instance Acc: Val {}".format(val_ins_acc)
+        x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
+        y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
+        y2 = "Classification Macro F1: Train {}; Val {}".format(train_f1, val_f1)
+        z = "Instance Acc: Val {}".format(val_ins_acc)
 
-            print(x)
-            print(y1)
-            print(y2)
-            print(z)
+        print(x)
+        print(y1)
+        print(y2)
+        print(z)
 
-            lf = open(lf_name, "a")
-            lf.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
-            lf.close()
-
-        training_time = time.time() - start_time
-        print('Training time:', training_time )
         lf = open(lf_name, "a")
-        lf.write('Training time: {}'.format(training_time) + "\n")
+        lf.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
         lf.close()
 
-        torch.save(model.state_dict(), model_ckp_path)
-        torch.save(optimizer.state_dict(), opt_ckp_path)
+    training_time = time.time() - start_time
+    print('Training time:', training_time )
+    lf = open(lf_name, "a")
+    lf.write('Training time: {}'.format(training_time) + "\n")
+    lf.close()
+
+    # torch.save(model.state_dict(), model_ckp_path)
+    # torch.save(optimizer.state_dict(), opt_ckp_path)
 
     print("Testing...")
 
-    if path.exists(model_ckp_path) and path.exists(opt_ckp_path):
-        model.load_state_dict(torch.load(model_ckp_path))
-        optimizer.load_state_dict(torch.load(opt_ckp_path))
+    # if path.exists(model_ckp_path) and path.exists(opt_ckp_path):
+    #     model.load_state_dict(torch.load(model_ckp_path))
+    #     optimizer.load_state_dict(torch.load(opt_ckp_path))
 
     print("Results for test LIT")
     start_time = time.time()

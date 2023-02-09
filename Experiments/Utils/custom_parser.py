@@ -74,6 +74,13 @@ def my_parser():
         )
 
     parser.add_argument(
+        '--num_choices', 
+        type = int,
+        default=4, 
+        help="Number of possible answers in the dataset."
+        )
+
+    parser.add_argument(
         '--max-clarifications', 
         type = int,
         default=3, 

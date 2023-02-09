@@ -17,10 +17,7 @@ def build_model(lr):
 
     eval_batch_size = args.eval_bs
     name = args.name
-
-    num_choices = 4
-    vars(args)["num_choices"] = num_choices
-    assert eval_batch_size % num_choices == 0, "Eval batch size should be a multiple of num choices, which is 4"
+    num_choices = args.num_choices
 
     model = Model(
         name=name,
@@ -41,41 +38,7 @@ def train_eval(model, optimizer, train_batch_size, save = False):
     input_format = args.input_format
     name = args.name
 
-    # args = my_parser()
-    # print(args)
-
-    # train_batch_size = args.bs
-    # eval_batch_size = args.eval_bs
-    # epochs = args.epochs
-    # name = args.name
-    # shuffle = args.shuffle
-    # input_format = args.input_format
-
-    # num_choices = 4
-    # vars(args)["num_choices"] = num_choices
-    # assert eval_batch_size % num_choices == 0, "Eval batch size should be a multiple of num choices, which is 4"
-
-    # model = Model(
-    #     name=name,
-    #     num_choices=num_choices
-    # ).cuda()
-
-    name_path = name.replace("/","-")
-    if save: 
-     model_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/persian/{name_path}.pth"
-     opt_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/persian/{name_path}_optimizer.pth"
-
-    # # if path.exists(model_ckp_path):
-    # #     model.load_state_dict(torch.load(model_ckp_path))
-
     sep_token = model.tokenizer.sep_token
-
-    # opt_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/persian/{name_path}_optimizer.pth"
-
-    # optimizer = configure_optimizer(model, args)
-
-    # if path.exists(opt_ckp_path):
-    #     optimizer.load_state_dict(torch.load(opt_ckp_path))
 
     json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
     json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
@@ -156,11 +119,6 @@ def train_eval(model, optimizer, train_batch_size, save = False):
         train_loss, train_acc, train_f1 = train(model, train_loader, optimizer)
         val_loss, val_acc, val_ins_acc, val_f1 = eval(model, val_loader)
 
-        #val_ins_acc_list.append(val_ins_acc)
-
-        # with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
-        #     f.write("\n".join(list(test_preds)))
-
         x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
         y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
         y2 = "Classification Macro F1: Train {}; Val {}".format(train_f1, val_f1)
@@ -185,9 +143,6 @@ def train_eval(model, optimizer, train_batch_size, save = False):
     # lf.write('Training time: {}'.format(training_time) + "\n")
     # lf.close()
     
-    if save:
-        torch.save(model.state_dict(), model_ckp_path)
-        torch.save(optimizer.state_dict(), opt_ckp_path)
 
     # print("Testing...")
 
