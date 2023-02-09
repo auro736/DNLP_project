@@ -7,6 +7,7 @@ from tqdm import tqdm
 from pathlib import Path
 
 import torch
+torch.manual_seed(4899)
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 

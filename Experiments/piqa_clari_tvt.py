@@ -7,6 +7,7 @@ from tqdm import tqdm
 from pathlib import Path
 
 import torch
+torch.manual_seed(4899)
 from torch.optim import AdamW
 from torch.utils.data import DataLoader
 
@@ -209,17 +210,17 @@ if __name__ == "__main__":
     vars(args)["exp_id"] = exp_id
     rs = "Acc: {}"
 
-    path = "/content/DNLP_project/saved/piqa_clarified_dataset/" + exp_id + "/" + name.replace("/", "-")
-    Path("/content/DNLP_project/saved/piqa_clarified_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
+    # path = "/content/DNLP_project/saved/piqa_clarified_dataset/" + exp_id + "/" + name.replace("/", "-")
+    # Path("/content/DNLP_project/saved/piqa_clarified_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
 
-    fname = "/content/DNLP_project/saved/piqa_clarified_dataset/" + exp_id + "/" + "args.txt"
+    # fname = "/content/DNLP_project/saved/piqa_clarified_dataset/" + exp_id + "/" + "args.txt"
 
-    f = open(fname, "a")
-    f.write(str(args) + "\n\n")
-    f.close()
+    # f = open(fname, "a")
+    # f.write(str(args) + "\n\n")
+    # f.close()
 
-    Path("/content/DNLP_project/results/piqa_clarified_dataset/").mkdir(parents=True, exist_ok=True)
-    lf_name = "/content/DNLP_project/results/piqa_clarified_dataset/" + name.replace("/", "-") + ".txt"
+    Path("/content/DNLP_project/log/piqa_clarified").mkdir(parents=True, exist_ok=True)
+    lf_name = "/content/DNLP_project/log/piqa_clarified" + name.replace("/", "-") + ".txt"
     lf = open(lf_name, "a")
     lf.write(str(args) + "\n\n")
     lf.close()
@@ -240,14 +241,13 @@ if __name__ == "__main__":
     # lf.close()
 
     #val_ins_acc_list = list()
-
+    
+    start_time = time.time()
     for e in range(epochs):
 
         train_loss, train_acc, train_f1 = train_or_eval_model(model, train_loader, optimizer, split = "Train")
         val_loss, val_acc, val_ins_acc, val_f1 = train_or_eval_model(model, val_loader, split="Val")
        
-        #val_ins_acc_list.append(val_ins_acc)
-
         x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
         y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
         y2 = "Classification Macro F1: Train {}; Val {}".format(train_f1, val_f1)
@@ -261,10 +261,12 @@ if __name__ == "__main__":
         lf = open(lf_name, "a")
         lf.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
         lf.close()
+    
+   
 
-        f = open(fname, "a")
-        f.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
-        f.close()
+        # f = open(fname, "a")
+        # f.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
+        # f.close()
 
     # torch.save(model.state_dict(), model_ckp_path)
     # torch.save(optimizer.state_dict(), opt_ckp_path)
@@ -276,7 +278,11 @@ if __name__ == "__main__":
 
     # with open(path + "-epoch-" + str(e + 1) + ".txt", "w") as f:
     #         f.write("\n".join(list(test_preds)))
-
+    
+    training_time = time.time() - start_time
+    print('Training time:', training_time )
+    
     lf = open(lf_name, "a")
+    lf.write('Training time: {}'.format(training_time) + "\n")
     lf.write("-" * 100 + "\n")
     lf.close()
