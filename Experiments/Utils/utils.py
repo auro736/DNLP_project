@@ -14,7 +14,7 @@ from Utils.custom_parser import my_parser
 
 args = my_parser()
 
-def configure_optimizer(model, args):
+def configure_optimizer(model, args, lr):
     no_decay = ["bias", "LayerNorm.weight"]
     optimizer_grouped_parameters = [
         {
