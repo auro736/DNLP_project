@@ -17,8 +17,11 @@ from sklearn.metrics import accuracy_score, f1_score
 from Ds.persian_ds import PersianDataset
 from Utils.custom_parser import my_parser
 
-
 from Models.model import Model
+
+from transformers import logging
+
+logging.set_verbosity_warning()
 
 
 def configure_optimizer(model, args):
@@ -246,8 +249,8 @@ if __name__ == "__main__":
     vars(args)["exp_id"] = exp_id
     rs = "Acc: {}"
 
-    # path = "/content/DNLP_project/saved/persian_dataset/" + exp_id + "/" + name.replace("/", "-")
-    # Path("/content/DNLP_project/saved/persian_dataset/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
+    path = "/content/DNLP_project/log/persian/" + exp_id + "/" + name.replace("/", "-")
+    Path("/content/DNLP_project/log/persian/" + exp_id + "/").mkdir(parents=True, exist_ok=True)
 
     fname = "/content/DNLP_project/log/persian/" + exp_id + "/" + "args.txt"
 
