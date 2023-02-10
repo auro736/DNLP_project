@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
     acc_list = list()
 
-    lf.open(lf_name, "a")
+    lf = open(lf_name, "a")
     for dev_loader in dev_dataloader_list:
         a = "Knowledge source: {}".format(dev_loader[0])
         print(a)

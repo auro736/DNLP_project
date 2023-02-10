@@ -1,0 +1,59 @@
+Namespace(adam_epsilon=1e-08, bs=8, epochs=8, eval_bs=8, input_format='0', lr=1e-05, max_clarifications=2, name='xlnet-base-cased', num_choices=2, shuffle=False, warm_up_steps=0, wd=0.0)
+
+Epoch 1: Loss: Train 0.6976;
+Classification Acc: Train 0.5061;
+Classification Macro F1: Train 0.5061;
+
+Epoch 2: Loss: Train 0.6945;
+Classification Acc: Train 0.5168;
+Classification Macro F1: Train 0.5168;
+
+Epoch 3: Loss: Train 0.6871;
+Classification Acc: Train 0.5412;
+Classification Macro F1: Train 0.541;
+
+Epoch 4: Loss: Train 0.6671;
+Classification Acc: Train 0.5909;
+Classification Macro F1: Train 0.5906;
+
+Epoch 5: Loss: Train 0.6331;
+Classification Acc: Train 0.6328;
+Classification Macro F1: Train 0.6321;
+
+Epoch 6: Loss: Train 0.593;
+Classification Acc: Train 0.673;
+Classification Macro F1: Train 0.6724;
+
+Epoch 7: Loss: Train 0.5518;
+Classification Acc: Train 0.7065;
+Classification Macro F1: Train 0.7058;
+
+Epoch 8: Loss: Train 0.5118;
+Classification Acc: Train 0.7344;
+Classification Macro F1: Train 0.734;
+
+Training time: 4804.991624355316
+Knowledge source: <DirEntry 'dev_clarified_distilgpt2.jsonl'>
+Instance accuracy: 0.6485
+Knowledge source: <DirEntry 'dev_clarified_xlnet-large-cased.jsonl'>
+Instance accuracy: 0.642
+Knowledge source: <DirEntry 'dev_clarified_xlnet-base-cased.jsonl'>
+Instance accuracy: 0.636
+Knowledge source: <DirEntry 'dev_clarified_comet.jsonl'>
+Instance accuracy: 0.6349
+Knowledge source: <DirEntry 'dev_clarified_googlengrams.jsonl'>
+Instance accuracy: 0.6306
+Knowledge source: <DirEntry 'dev_clarified_gpt2-large.jsonl'>
+Instance accuracy: 0.6447
+Knowledge source: <DirEntry 'dev_clarified_conceptnet.jsonl'>
+Instance accuracy: 0.623
+Knowledge source: <DirEntry 'dev_clarified_gpt2.jsonl'>
+Instance accuracy: 0.6382
+Knowledge source: <DirEntry 'dev_clarified_gpt2-medium.jsonl'>
+Instance accuracy: 0.6578
+Knowledge source: <DirEntry 'dev_clarified_gpt2-xl.jsonl'>
+Instance accuracy: 0.6442
+Knowledge source: <DirEntry 'dev_clarified_openai-gpt.jsonl'>
+Instance accuracy: 0.636
+Average, across knowledge sources, Instance Accuracy: 0.6396272727272728
+----------------------------------------------------------------------------------------------------

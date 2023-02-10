@@ -37,15 +37,15 @@ class PiqaDataset(Dataset):
             l = instance["label"]
             '''create all the possible combinations (question, answer)'''
 
-            if input_format == "0":
-                content.append("{} {}".format(question, a1))
-                content.append("{} {}".format(question, a2))
-            elif input_format == "1":
-                content.append("{} {} {}".format(question, sep_token, a1))
-                content.append("{} {} {}".format(question, sep_token, a2))
-            elif input_format == "2":
-                content.append("goal: {} {} solution: {}".format(question, sep_token, a1))
-                content.append("goal: {} {} solution: {}".format(question, sep_token, a2))
+            # if input_format == "0":
+            content.append("{} {}".format(question, a1))
+            content.append("{} {}".format(question, a2))
+            # elif input_format == "1":
+            #     content.append("{} {} {}".format(question, sep_token, a1))
+            #     content.append("{} {} {}".format(question, sep_token, a2))
+            # elif input_format == "2":
+            #     content.append("goal: {} {} solution: {}".format(question, sep_token, a1))
+            #     content.append("goal: {} {} solution: {}".format(question, sep_token, a2))
             
             if l == 0:
                 labels += [1, 0]
@@ -107,23 +107,13 @@ class ClarifiedPiqaDataset(Dataset):
             if len(clarifications) >= args.max_clarifications:
                 clarifications = random.sample(clarifications, args.max_clarifications)
 
-            if input_format == "0":
-                    content.append("{} {} {} {} {}".format(question, sep_token, a1, sep_token, clarifications))
-                    content.append("{} {} {} {} {}".format(question, sep_token, a2, sep_token, clarifications))
-            elif input_format == "1":
-                    content.append("goal: {} {} solution: {} {} clarifications: {}".format(question, sep_token, a1, sep_token, clarifications))
-                    content.append("goal: {} {} solution: {} {} clarifications: {}".format(question, sep_token, a2, sep_token, clarifications))
-
             # if input_format == "0":
-            #     content.append("{} {}".format(question, a1))
-            #     content.append("{} {}".format(question, a2))
+            content.append("{} {} {} {} {}".format(question, sep_token, a1, sep_token, clarifications))
+            content.append("{} {} {} {} {}".format(question, sep_token, a2, sep_token, clarifications))
             # elif input_format == "1":
-            #     content.append("{} {} {}".format(question, sep_token, a1))
-            #     content.append("{} {} {}".format(question, sep_token, a2))
-            # elif input_format == "2":
-            #     content.append("goal: {} {} solution: {}".format(question, sep_token, a1))
-            #     content.append("goal: {} {} solution: {}".format(question, sep_token, a2))
-            
+            #         content.append("goal: {} {} solution: {} {} clarifications: {}".format(question, sep_token, a1, sep_token, clarifications))
+            #         content.append("goal: {} {} solution: {} {} clarifications: {}".format(question, sep_token, a2, sep_token, clarifications))
+
             if l == 0:
                 labels += [1, 0]
             elif l == 1:
