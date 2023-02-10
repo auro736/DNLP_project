@@ -51,11 +51,11 @@ class PersianDataset(Dataset):
                 a3 = instance["candidates"][2]
                 a4 = instance["candidates"][3]
                 
-                content.append("{} {}".format(question, a1))
-                content.append("{} {}".format(question, a2))
-                content.append("{} {}".format(question, a3))
-                content.append("{} {}".format(question, a4))
-                
+                content.append("{} {} {}".format(question, a1, category))
+                content.append("{} {} {}".format(question, a2, category))
+                content.append("{} {} {}".format(question, a3, category))
+                content.append("{} {} {}".format(question, a4, category))
+
                 # if input_format == "0":
                 #     content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a1))
                 #     content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a2))
