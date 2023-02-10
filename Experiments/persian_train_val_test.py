@@ -26,28 +26,20 @@ if __name__ == "__main__":
     shuffle = args.shuffle
     input_format = args.input_format
 
-    num_choices = 4
-    vars(args)["num_choices"] = num_choices
-    assert eval_batch_size % num_choices == 0, "Eval batch size should be a multiple of num choices, which is 4"
+    assert eval_batch_size % args.num_choices == 0, "Eval batch size should be a multiple of num choices, which is 4"
 
     model = Model(
         name=name,
-        num_choices=num_choices
+        num_choices=args.num_choices
     ).cuda()
 
     name_path = name.replace("/","-")
     model_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/persian/{name_path}.pth"
     opt_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/persian/{name_path}_optimizer.pth"
 
-    # if path.exists(model_ckp_path):
-    #     model.load_state_dict(torch.load(model_ckp_path))
-
     sep_token = model.tokenizer.sep_token
 
     optimizer = configure_optimizer(model, args)
-
-    # if path.exists(opt_ckp_path):
-    #     optimizer.load_state_dict(torch.load(opt_ckp_path))
 
     json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
     json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
@@ -132,8 +124,6 @@ if __name__ == "__main__":
     lf.write(str(args) + "\n\n")
     lf.close()
 
-
-    # if not path.exists(model_ckp_path) and not path.exists(opt_ckp_path):
     print("Start training....")
     start_time = time.time()
     for e in range(epochs):
@@ -161,14 +151,7 @@ if __name__ == "__main__":
     lf.write('Training time: {}'.format(training_time) + "\n")
     lf.close()
 
-    # torch.save(model.state_dict(), model_ckp_path)
-    # torch.save(optimizer.state_dict(), opt_ckp_path)
-
     print("Testing...")
-
-    # if path.exists(model_ckp_path) and path.exists(opt_ckp_path):
-    #     model.load_state_dict(torch.load(model_ckp_path))
-    #     optimizer.load_state_dict(torch.load(opt_ckp_path))
 
     print("Results for test LIT")
     start_time = time.time()

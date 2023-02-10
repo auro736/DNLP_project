@@ -5,8 +5,13 @@ import pandas as pd
 
 from torch.utils.data import Dataset
 
+from Utils.custom_parser import my_parser
+
 class PersianDataset(Dataset):
     def __init__(self, f, shuffle,sep_token,input_format):
+
+        args = my_parser()
+
         '''
         f = path to json file
         sep_token = token separatore(?)
@@ -51,31 +56,16 @@ class PersianDataset(Dataset):
                 a3 = instance["candidates"][2]
                 a4 = instance["candidates"][3]
                 
-                content.append("{} {} {}".format(question, a1, category))
-                content.append("{} {} {}".format(question, a2, category))
-                content.append("{} {} {}".format(question, a3, category))
-                content.append("{} {} {}".format(question, a4, category))
-
-                # if input_format == "0":
-                #     content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a1))
-                #     content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a2))
-                #     content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a3))
-                #     content.append("Context: {} {} Question: {} {} Answer: {}".format(category, sep_token, question, sep_token, a4))
-                # elif input_format == "1":
-                #     content.append("{} \\n {} \\n {}".format(question, a1, category))
-                #     content.append("{} \\n {} \\n {}".format(question, a2, category))
-                #     content.append("{} \\n {} \\n {}".format(question, a3, category))
-                #     content.append("{} \\n {} \\n {}".format(question, a4, category))
-                # elif input_format == "2":
-                #     content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a1))
-                #     content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a2))
-                #     content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a3))
-                #     content.append("<context>{}</context>\n<question>{}</question>\n<answer>{}</answer>".format(category, question, a4))
-                # elif input_format == "3":
-                #     content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a1, category, sep_token))
-                #     content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a2, category, sep_token))
-                #     content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a3, category, sep_token))
-                #     content.append("Question: {} {} Answer: {} {} Context: {}".format(question, sep_token, a4, category, sep_token))
+                if args.use_categories == 1:
+                    content.append("{} {} {}".format(question, a1, category))
+                    content.append("{} {} {}".format(question, a2, category))
+                    content.append("{} {} {}".format(question, a3, category))
+                    content.append("{} {} {}".format(question, a4, category))
+                elif args.use_categories == 0:
+                    content.append("{} {}".format(question, a1))
+                    content.append("{} {}".format(question, a2))
+                    content.append("{} {}".format(question, a3))
+                    content.append("{} {}".format(question, a4))
                 
                 if correct_answer_id == 1:
                     labels += [1, 0, 0, 0]

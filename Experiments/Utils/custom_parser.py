@@ -81,10 +81,17 @@ def my_parser():
         )
 
     parser.add_argument(
-        '--max-clarifications', 
+        '--max_clarifications', 
         type = int,
         default=3, 
         help="Max number of clarification sentences for the piqa dataset."
+        )
+
+    parser.add_argument(
+        '--use_categories', 
+        type = int,
+        default=1, 
+        help="Use categories of persian dataset, 1 --> yes, 0 --> no"
         )
 
     return parser.parse_args()
