@@ -5,7 +5,7 @@ import torch
 torch.manual_seed(4899)
 from torch.utils.data import DataLoader
 
-from Ds.piqa_ds import PiqaDataset
+from Ds.piqa_ds import PiqaDataset, ClarifiedPiqaDataset
 from Utils.custom_parser import my_parser
 
 from Models.model import Model
@@ -37,6 +37,8 @@ if __name__ == "__main__":
     optimizer = configure_optimizer(model, args)
 
     json_path_train = "/content/DNLP_project/data/clarified_piqa/train.jsonl"
+    json_path_test = "/content/DNLP_project/data/clarified_piqa/test_clarified_xlnet-base-cased.jsonl"
+
 
     train_dataset = PiqaDataset(
                         json_path_train, 
@@ -55,7 +57,22 @@ if __name__ == "__main__":
 
     dev_dataloader_list = create_dev_dl(model)
 
+
+    test_dataset = ClarifiedPiqaDataset(
+                        json_path_train, 
+                        sep_token=sep_token, 
+                        input_format=input_format, 
+                        shuffle=True
+                        )
+
     
+    test_loader = DataLoader(
+                        train_dataset, 
+                        shuffle=shuffle, 
+                        batch_size=train_batch_size,
+                        collate_fn=train_dataset.collate_fn
+                        )
+
 
     Path("/content/DNLP_project/log/piqa_clarified").mkdir(parents=True, exist_ok=True)
     lf_name = "/content/DNLP_project/log/piqa_clarified" + name.replace("/", "-") + ".txt"
@@ -103,6 +120,19 @@ if __name__ == "__main__":
     lf = open(lf_name, "a")
     lf.write('Training time: {}'.format(training_time) + "\n")
     lf.close()
+
+    Path("/content/DNLP_project/log/piqa_clarified/predictions/").mkdir(parents=True, exist_ok=True)
+    path_pred = "/content/DNLP_project/log/piqa_clarified/predictions/" + name.replace("/", "-") + "preds.txt"
+
+    print("Making test predictions...")
+    start_time = time.time()
+    test_preds = test(model, test_loader, ds = 'piqa_clarified')
+    print('Execution time:', time.time() - start_time)
+
+    with open(path_pred,"a") as f:
+        f.write(str(args) + "\n\n")
+        f.write("\n".join(list(test_preds)))
+
 
     #acc_list = list()
 

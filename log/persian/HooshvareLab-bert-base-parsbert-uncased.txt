@@ -15,7 +15,7 @@ Classification Acc: Train 0.76; Val 0.7302
 Classification Macro F1: Train 0.548; Val 0.5199
 Instance Acc: Val 0.3022
 
-Training time: 175.97904443740845
+Training time: 173.48092770576477
 Instance Acc: Test LIT 0.3286
 Instance Acc: Test CK 0.2943
 Instance Acc: Test ML 0.3429
@@ -37,7 +37,7 @@ Classification Acc: Train 0.7506; Val 0.7248
 Classification Macro F1: Train 0.4755; Val 0.4556
 Instance Acc: Val 0.2734
 
-Training time: 167.7341251373291
+Training time: 164.93281292915344
 Instance Acc: Test LIT 0.3429
 Instance Acc: Test CK 0.2886
 Instance Acc: Test ML 0.3029

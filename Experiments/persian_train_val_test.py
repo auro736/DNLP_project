@@ -155,56 +155,35 @@ if __name__ == "__main__":
 
     Path("/content/DNLP_project/log/persian/predictions/").mkdir(parents=True, exist_ok=True)
     path_lit_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "_lit_pred.txt"
-
-    lf_lit = open(path_lit_pred, "a")
-    lf_lit.write(str(args) + "\n\n")
-    lf_lit.close()
-
     path_ck_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "_ck_pred.txt"
-    lf_ck = open(path_ck_pred, "a")
-    lf_ck.write(str(args) + "\n\n")
-    lf_ck.close()
-
     path_ml_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "_ml_pred.txt"
-    lf_ml = open(path_ml_pred, "a")
-    lf_ml.write(str(args) + "\n\n")
-    lf_ml.close()
 
     print("Results for test LIT")
     start_time = time.time()
     test_preds_lit, ins_acc_lit = test(model, test_loader_lit, ds = 'persian')
     print('Execution time:', time.time() - start_time)
 
-    lf_lit = open(path_lit_pred, "a")
-    lf_lit.write("\n".join(list(test_preds_lit)))
-    lf_lit.close()
-
-    # with open(lit_pred,"w") as f:
-    #     f.write("\n".join(list(test_preds_lit)))
+    with open(path_lit_pred,"a") as f:
+        f.write(str(args) + "\n\n")
+        f.write("\n".join(list(test_preds_lit)))
 
     print("Results for test CK")
     start_time = time.time()
     test_preds_ck, ins_acc_ck = test(model, test_loader_ck, ds = 'persian')
     print('Execution time:', time.time() - start_time)
 
-    lf_ck = open(path_lit_pred, "a")
-    lf_ck.write("\n".join(list(test_preds_ck)))
-    lf_ck.close()
-
-    # with open(ck_pred,"w") as f:
-    #     f.write("\n".join(list(test_preds_ck)))
+    with open(path_ck_pred,"a") as f:
+        f.write(str(args) + "\n\n")
+        f.write("\n".join(list(test_preds_ck)))
 
     print("Results for test ML")
     start_time = time.time()
     test_preds_ml, ins_acc_ml  = test(model, test_loader_ml, ds = 'persian')
     print('Execution time:', time.time() - start_time)
 
-    lf_ml = open(path_lit_pred, "a")
-    lf_ml.write("\n".join(list(test_preds_ml)))
-    lf_ml.close()
-
-    # with open(ml_pred,"w") as f:
-    #     f.write("\n".join(list(test_preds_ml)))
+    with open(path_ml_pred,"a") as f:
+        f.write(str(args) + "\n\n")
+        f.write("\n".join(list(test_preds_ml)))
 
     lf = open(lf_name, "a")
     lf.write("Instance Acc: Test LIT {}".format(ins_acc_lit)+"\n")

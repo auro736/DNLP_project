@@ -1,0 +1,44 @@
+Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, input_format='0', lr=3e-05, max_clarifications=3, name='bert-base-multilingual-uncased', num_choices=4, shuffle=False, use_categories=1, warm_up_steps=0, wd=0.0)
+
+Epoch 1: Loss: Train 0.5677; Val 0.5624
+Classification Acc: Train 0.7488; Val 0.75
+Classification Macro F1: Train 0.4282; Val 0.4286
+Instance Acc: Val 0.2806
+
+Epoch 2: Loss: Train 0.5649; Val 0.5626
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.2662
+
+Epoch 3: Loss: Train 0.5657; Val 0.5624
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.2518
+
+Training time: 212.35170483589172
+Instance Acc: Test LIT 0.2686
+Instance Acc: Test CK 0.2886
+Instance Acc: Test ML 0.2343
+----------------------------------------------------------------------------------------------------
+Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, input_format='0', lr=3e-05, max_clarifications=3, name='bert-base-multilingual-uncased', num_choices=4, shuffle=False, use_categories=0, warm_up_steps=0, wd=0.0)
+
+Epoch 1: Loss: Train 0.5646; Val 0.5625
+Classification Acc: Train 0.7496; Val 0.75
+Classification Macro F1: Train 0.4292; Val 0.4286
+Instance Acc: Val 0.2014
+
+Epoch 2: Loss: Train 0.563; Val 0.5624
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.2158
+
+Epoch 3: Loss: Train 0.5626; Val 0.5626
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4286; Val 0.4286
+Instance Acc: Val 0.2446
+
+Training time: 205.5665898323059
+Instance Acc: Test LIT 0.2771
+Instance Acc: Test CK 0.24
+Instance Acc: Test ML 0.2429
+----------------------------------------------------------------------------------------------------
