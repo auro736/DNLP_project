@@ -1,22 +1,44 @@
-Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, exp_id='1675954761', input_format='0', lr=3e-05, max_clarifications=3, name='HooshvareLab/bert-base-parsbert-uncased', num_choices=4, shuffle=False, warm_up_steps=0, wd=0.0)
+Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, input_format='0', lr=3e-05, max_clarifications=3, name='HooshvareLab/bert-base-parsbert-uncased', num_choices=4, shuffle=False, use_categories=1, warm_up_steps=0, wd=0.0)
 
-Epoch 1: Loss: Train 0.5698; Val 0.563
-Classification Acc: Train 0.7484; Val 0.75
-Classification Macro F1: Train 0.4311; Val 0.4286
-Instance Acc: Val 0.2446
+Epoch 1: Loss: Train 0.5699; Val 0.5632
+Classification Acc: Train 0.748; Val 0.75
+Classification Macro F1: Train 0.431; Val 0.4286
+Instance Acc: Val 0.259
 
-Epoch 2: Loss: Train 0.5649; Val 0.5624
+Epoch 2: Loss: Train 0.5654; Val 0.5596
+Classification Acc: Train 0.75; Val 0.75
+Classification Macro F1: Train 0.4293; Val 0.4286
+Instance Acc: Val 0.2662
+
+Epoch 3: Loss: Train 0.519; Val 0.6007
+Classification Acc: Train 0.76; Val 0.7302
+Classification Macro F1: Train 0.548; Val 0.5199
+Instance Acc: Val 0.3022
+
+Training time: 175.97904443740845
+Instance Acc: Test LIT 0.3286
+Instance Acc: Test CK 0.2943
+Instance Acc: Test ML 0.3429
+----------------------------------------------------------------------------------------------------
+Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, input_format='0', lr=3e-05, max_clarifications=3, name='HooshvareLab/bert-base-parsbert-uncased', num_choices=4, shuffle=False, use_categories=0, warm_up_steps=0, wd=0.0)
+
+Epoch 1: Loss: Train 0.5694; Val 0.5632
+Classification Acc: Train 0.7476; Val 0.75
+Classification Macro F1: Train 0.4316; Val 0.4286
+Instance Acc: Val 0.223
+
+Epoch 2: Loss: Train 0.5655; Val 0.5688
 Classification Acc: Train 0.75; Val 0.75
 Classification Macro F1: Train 0.4286; Val 0.4286
-Instance Acc: Val 0.2302
+Instance Acc: Val 0.2374
 
-Epoch 3: Loss: Train 0.5653; Val 0.5594
-Classification Acc: Train 0.7498; Val 0.75
-Classification Macro F1: Train 0.4285; Val 0.4286
-Instance Acc: Val 0.3381
+Epoch 3: Loss: Train 0.5491; Val 0.5927
+Classification Acc: Train 0.7506; Val 0.7248
+Classification Macro F1: Train 0.4755; Val 0.4556
+Instance Acc: Val 0.2734
 
-Training time: 201.79769730567932
-Instance Acc: Test LIT 0.3229
-Instance Acc: Test CK 0.2914
-Instance Acc: Test ML 0.3343
+Training time: 167.7341251373291
+Instance Acc: Test LIT 0.3429
+Instance Acc: Test CK 0.2886
+Instance Acc: Test ML 0.3029
 ----------------------------------------------------------------------------------------------------
