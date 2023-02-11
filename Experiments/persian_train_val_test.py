@@ -154,9 +154,18 @@ if __name__ == "__main__":
     print("Testing...")
 
     Path("/content/DNLP_project/log/persian/predictions/").mkdir(parents=True, exist_ok=True)
-    lit_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "lit_pred.txt"
-    ck_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "ck_pred.txt"
-    ml_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "ml_pred.txt"
+    lit_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "_lit_pred.txt"
+    lf = open(lit_pred, "a")
+    lf.write(str(args) + "\n\n")
+    lf.close()
+    ck_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "_ck_pred.txt"
+    lf = open(ck_pred, "a")
+    lf.write(str(args) + "\n\n")
+    lf.close()
+    ml_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "_ml_pred.txt"
+    lf = open(ml_pred, "a")
+    lf.write(str(args) + "\n\n")
+    lf.close()
 
     print("Results for test LIT")
     start_time = time.time()
