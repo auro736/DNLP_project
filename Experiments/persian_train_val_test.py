@@ -153,20 +153,34 @@ if __name__ == "__main__":
 
     print("Testing...")
 
+    Path("/content/DNLP_project/log/persian/predictions/").mkdir(parents=True, exist_ok=True)
+    lit_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "lit_pred.txt"
+    ck_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "ck_pred.txt"
+    ml_pred = "/content/DNLP_project/log/persian/predictions/" + name.replace("/", "-") + "ml_pred.txt"
+
     print("Results for test LIT")
     start_time = time.time()
-    test_preds_lit, ins_acc_lit = test(model, test_loader_lit)
+    test_preds_lit, ins_acc_lit = test(model, test_loader_lit, ds = 'persian')
     print('Execution time:', time.time() - start_time)
+
+    with open(lit_pred,"w") as f:
+        f.write("\n".join(list(test_preds_lit)))
 
     print("Results for test CK")
     start_time = time.time()
-    test_preds_ck, ins_acc_ck = test(model, test_loader_ck)
+    test_preds_ck, ins_acc_ck = test(model, test_loader_ck, ds = 'persian')
     print('Execution time:', time.time() - start_time)
+
+    with open(ck_pred,"w") as f:
+        f.write("\n".join(list(test_preds_ck)))
 
     print("Results for test ML")
     start_time = time.time()
-    test_preds_ml, ins_acc_ml  = test(model, test_loader_ml)
+    test_preds_ml, ins_acc_ml  = test(model, test_loader_ml, ds = 'persian')
     print('Execution time:', time.time() - start_time)
+
+    with open(ml_pred,"w") as f:
+        f.write("\n".join(list(test_preds_ml)))
 
     lf = open(lf_name, "a")
     lf.write("Instance Acc: Test LIT {}".format(ins_acc_lit)+"\n")
