@@ -55,27 +55,46 @@ if __name__ == "__main__":
 
     dev_dataloader_list = create_dev_dl(model)
 
+    
+
     Path("/content/DNLP_project/log/piqa_clarified").mkdir(parents=True, exist_ok=True)
     lf_name = "/content/DNLP_project/log/piqa_clarified" + name.replace("/", "-") + ".txt"
     lf = open(lf_name, "a")
     lf.write(str(args) + "\n\n")
     lf.close()
-    
+
     start_time = time.time()
     for e in range(epochs):
 
+        acc_list = list()
         train_loss, train_acc, train_f1 = train(model, train_loader, optimizer)
-       
-        x = "Epoch {}: Loss: Train {};".format(e + 1, train_loss)
-        y1 = "Classification Acc: Train {};".format(train_acc)
-        y2 = "Classification Macro F1: Train {};".format(train_f1)
+
+        for dev_loader in dev_dataloader_list: 
+            # dev_loader is a tuple of (name of LM, dataloader related)
+            a = "Knowledge source: {}".format(dev_loader[0])
+            print(a)
+            lf.write(a + "\n")
+            val_loss, val_acc, val_ins_acc, val_f1  = eval(model, dev_loader[1])
+            b = "Instance accuracy: {}".format(val_ins_acc)
+
+            print(b)
+            lf.write(b + "\n")
+            acc_list.append(val_ins_acc)
+        avg = sum(acc_list)/len(acc_list)
         
+        x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
+        y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
+        y2 = "Classification Macro F1: Train {}; Val {}".format(train_f1, val_f1)
+        z = "Average, across knowledge sources, Instance Accuracy: Val {}".format(avg)
+        #z = "Instance Acc: Val {}".format(val_ins_acc)
+
         print(x)
         print(y1)
         print(y2)
+        print(z)
 
         lf = open(lf_name, "a")
-        lf.write(x + "\n" + y1 + "\n" + y2 + "\n" + "\n\n")
+        lf.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
         lf.close()
     
     training_time = time.time() - start_time
@@ -85,21 +104,25 @@ if __name__ == "__main__":
     lf.write('Training time: {}'.format(training_time) + "\n")
     lf.close()
 
-    acc_list = list()
+    #acc_list = list()
+
+    # lf = open(lf_name, "a")
+    # for dev_loader in dev_dataloader_list:
+    #     a = "Knowledge source: {}".format(dev_loader[0])
+    #     print(a)
+    #     lf.write(a + "\n")
+    #     preds, ins_acc  = test(model, dev_loader[1])
+    #     b = "Instance accuracy: {}".format(ins_acc)
+    #     print(b)
+    #     lf.write(b + "\n")
+    #     acc_list.append(ins_acc)
+    # avg = sum(acc_list)/len(acc_list)
+    # print("Average, across knowledge sources, Instance Accuracy: {}".format(avg))
+    # lf.write("Average, across knowledge sources, Instance Accuracy: {}".format(avg) + "\n")
+    # lf.write("-" * 100 + "\n")
+    # lf.close()
 
     lf = open(lf_name, "a")
-    for dev_loader in dev_dataloader_list:
-        a = "Knowledge source: {}".format(dev_loader[0])
-        print(a)
-        lf.write(a + "\n")
-        preds, ins_acc  = test(model, dev_loader[1])
-        b = "Instance accuracy: {}".format(ins_acc)
-        print(b)
-        lf.write(b + "\n")
-        acc_list.append(ins_acc)
-    avg = sum(acc_list)/len(acc_list)
-    print("Average, across knowledge sources, Instance Accuracy: {}".format(avg))
-    lf.write("Average, across knowledge sources, Instance Accuracy: {}".format(avg) + "\n")
     lf.write("-" * 100 + "\n")
     lf.close()
 
