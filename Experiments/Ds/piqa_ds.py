@@ -95,7 +95,10 @@ class ClarifiedPiqaDataset(Dataset):
 
             question = instance["goal"]
             a1, a2 = instance["sol1"], instance["sol2"]
-            l = instance["label"]
+            if "label" in instance:
+                l = instance["label"]
+            else:
+                l = 0
             '''create all the possible combinations (question, answer)'''
 
             #clarifications = instance["clarifications"]

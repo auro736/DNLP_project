@@ -59,15 +59,15 @@ if __name__ == "__main__":
 
 
     test_dataset = ClarifiedPiqaDataset(
-                        json_path_train, 
+                        json_path_test, 
                         sep_token=sep_token, 
                         input_format=input_format, 
-                        shuffle=True
+                        shuffle=False
                         )
 
     
     test_loader = DataLoader(
-                        train_dataset, 
+                        test_dataset, 
                         shuffle=shuffle, 
                         batch_size=train_batch_size,
                         collate_fn=train_dataset.collate_fn
@@ -90,12 +90,9 @@ if __name__ == "__main__":
             # dev_loader is a tuple of (name of LM, dataloader related)
             a = "Knowledge source: {}".format(dev_loader[0])
             print(a)
-            lf.write(a + "\n")
             val_loss, val_acc, val_ins_acc, val_f1  = eval(model, dev_loader[1])
             b = "Instance accuracy: {}".format(val_ins_acc)
-
             print(b)
-            lf.write(b + "\n")
             acc_list.append(val_ins_acc)
         avg = sum(acc_list)/len(acc_list)
         
@@ -111,7 +108,7 @@ if __name__ == "__main__":
         print(z)
 
         lf = open(lf_name, "a")
-        lf.write(x + "\n" + y1 + "\n" + y2 + "\n" + z + "\n\n")
+        lf.write(x + "\n" + y1 + "\n" + y2 + a + "\n" + b + "\n" + z + "\n\n")
         lf.close()
     
     training_time = time.time() - start_time
@@ -122,7 +119,7 @@ if __name__ == "__main__":
     lf.close()
 
     Path("/content/DNLP_project/log/piqa_clarified/predictions/").mkdir(parents=True, exist_ok=True)
-    path_pred = "/content/DNLP_project/log/piqa_clarified/predictions/" + name.replace("/", "-") + "preds.txt"
+    path_pred = "/content/DNLP_project/log/piqa_clarified/predictions/" + name.replace("/", "-") + "_preds.txt"
 
     print("Making test predictions...")
     start_time = time.time()
