@@ -1,4 +1,4 @@
-Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, input_format='0', lr=3e-05, max_clarifications=3, name='HooshvareLab/bert-base-parsbert-uncased', num_choices=4, shuffle=False, use_categories=1, warm_up_steps=0, wd=0.0)
+Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, lr=3e-05, max_clarifications=3, name='HooshvareLab/bert-base-parsbert-uncased', num_choices=4, shuffle=False, use_categories=1, warm_up_steps=0, wd=0.0)
 
 Epoch 1: Loss: Train 0.5699; Val 0.5632
 Classification Acc: Train 0.748; Val 0.75
@@ -20,7 +20,7 @@ Instance Acc: Test LIT 0.3286
 Instance Acc: Test CK 0.2943
 Instance Acc: Test ML 0.3429
 ----------------------------------------------------------------------------------------------------
-Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, input_format='0', lr=3e-05, max_clarifications=3, name='HooshvareLab/bert-base-parsbert-uncased', num_choices=4, shuffle=False, use_categories=0, warm_up_steps=0, wd=0.0)
+Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, lr=3e-05, max_clarifications=3, name='HooshvareLab/bert-base-parsbert-uncased', num_choices=4, shuffle=False, use_categories=0, warm_up_steps=0, wd=0.0)
 
 Epoch 1: Loss: Train 0.5694; Val 0.5632
 Classification Acc: Train 0.7476; Val 0.75

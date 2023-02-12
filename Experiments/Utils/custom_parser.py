@@ -67,11 +67,11 @@ def my_parser():
         sequences of the same question are not necessarily in the same batch."
         )
 
-    parser.add_argument(
-        '--input-format', 
-        default="0", 
-        help="How to format the input data."
-        )
+    # parser.add_argument(
+    #     '--input-format', 
+    #     default="0", 
+    #     help="How to format the input data."
+    #     )
 
     parser.add_argument(
         '--num_choices', 

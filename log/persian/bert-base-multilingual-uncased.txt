@@ -1,4 +1,4 @@
-Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, input_format='0', lr=3e-05, max_clarifications=3, name='bert-base-multilingual-uncased', num_choices=4, shuffle=False, use_categories=1, warm_up_steps=0, wd=0.0)
+Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, lr=3e-05, max_clarifications=3, name='bert-base-multilingual-uncased', num_choices=4, shuffle=False, use_categories=1, warm_up_steps=0, wd=0.0)
 
 Epoch 1: Loss: Train 0.5677; Val 0.5624
 Classification Acc: Train 0.7488; Val 0.75
@@ -20,7 +20,7 @@ Instance Acc: Test LIT 0.2686
 Instance Acc: Test CK 0.2886
 Instance Acc: Test ML 0.2343
 ----------------------------------------------------------------------------------------------------
-Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, input_format='0', lr=3e-05, max_clarifications=3, name='bert-base-multilingual-uncased', num_choices=4, shuffle=False, use_categories=0, warm_up_steps=0, wd=0.0)
+Namespace(adam_epsilon=1e-08, bs=16, epochs=3, eval_bs=8, lr=3e-05, max_clarifications=3, name='bert-base-multilingual-uncased', num_choices=4, shuffle=False, use_categories=0, warm_up_steps=0, wd=0.0)
 
 Epoch 1: Loss: Train 0.5646; Val 0.5625
 Classification Acc: Train 0.7496; Val 0.75

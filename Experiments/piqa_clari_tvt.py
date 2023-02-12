@@ -89,10 +89,10 @@ if __name__ == "__main__":
         for dev_loader in dev_dataloader_list: 
             # dev_loader is a tuple of (name of LM, dataloader related)
             a = "Knowledge source: {}".format(dev_loader[0])
-            print(a)
+            #print(a)
             val_loss, val_acc, val_ins_acc, val_f1  = eval(model, dev_loader[1])
             b = "Instance accuracy: {}".format(val_ins_acc)
-            print(b)
+            #print(b)
             acc_list.append(val_ins_acc)
         avg = sum(acc_list)/len(acc_list)
         

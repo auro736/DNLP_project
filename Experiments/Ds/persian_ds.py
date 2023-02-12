@@ -37,9 +37,7 @@ class PersianDataset(Dataset):
                 for network purposes we  need to have the number of choices fixed
                 aribitrary chosen as 4, so we proceed only if len(choices) == 4
             '''
-            #choices = [a for a in instance["candidates"]]
-
-            #if len(choices) == 4:
+            
             if len(instance["candidates"]) == 4:
 
                 '''question'''
