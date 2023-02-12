@@ -25,7 +25,7 @@ if __name__ == "__main__":
     epochs = args.epochs
     name = args.name
     shuffle = args.shuffle
-    input_format = args.input_format
+    #input_format = args.input_format
 
     model = Model(
         name=name,
@@ -42,8 +42,6 @@ if __name__ == "__main__":
 
     train_dataset = PiqaDataset(
                         json_path_train, 
-                        sep_token=sep_token, 
-                        input_format=input_format, 
                         shuffle=True
                         )
 
@@ -61,7 +59,6 @@ if __name__ == "__main__":
     test_dataset = ClarifiedPiqaDataset(
                         json_path_test, 
                         sep_token=sep_token, 
-                        input_format=input_format, 
                         shuffle=False
                         )
 

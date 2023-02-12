@@ -26,7 +26,6 @@ def create_dev_dl(model):
             dev_dataset = ClarifiedPiqaDataset(
                             full_path, 
                             sep_token=model.tokenizer.sep_token, 
-                            input_format=args.input_format, 
                             shuffle=False
                         )
             

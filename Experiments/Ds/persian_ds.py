@@ -8,7 +8,7 @@ from torch.utils.data import Dataset
 from Utils.custom_parser import my_parser
 
 class PersianDataset(Dataset):
-    def __init__(self, f, shuffle,sep_token,input_format):
+    def __init__(self, f, shuffle):
 
         args = my_parser()
 
@@ -37,7 +37,7 @@ class PersianDataset(Dataset):
                 for network purposes we  need to have the number of choices fixed
                 aribitrary chosen as 4, so we proceed only if len(choices) == 4
             '''
-            
+
             if len(instance["candidates"]) == 4:
 
                 '''question'''

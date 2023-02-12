@@ -9,7 +9,7 @@ from Utils.custom_parser import my_parser
 
 class PiqaDataset(Dataset):
 
-    def __init__(self, f, shuffle, sep_token,input_format):
+    def __init__(self, f, shuffle):
 
         '''
         f = path to json file
@@ -68,7 +68,7 @@ class PiqaDataset(Dataset):
 
 class ClarifiedPiqaDataset(Dataset):
 
-    def __init__(self, f, shuffle, sep_token,input_format):
+    def __init__(self, f, shuffle, sep_token):
 
         args = my_parser()
 

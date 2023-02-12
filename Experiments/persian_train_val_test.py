@@ -24,7 +24,7 @@ if __name__ == "__main__":
     epochs = args.epochs
     name = args.name
     shuffle = args.shuffle
-    input_format = args.input_format
+    #input_format = args.input_format
 
     assert eval_batch_size % args.num_choices == 0, "Eval batch size should be a multiple of num choices, which is 4"
 
@@ -49,36 +49,26 @@ if __name__ == "__main__":
 
     train_dataset = PersianDataset(
                         json_path_train, 
-                        sep_token=sep_token, 
-                        input_format=input_format, 
                         shuffle=True
                         )
     
     val_dataset = PersianDataset(
                         json_path_valid, 
-                        sep_token=sep_token, 
-                        input_format=input_format, 
                         shuffle=False
                         )
 
     test_dataset_lit = PersianDataset(
                         json_path_test_lit, 
-                        sep_token=sep_token, 
-                        input_format=input_format, 
                         shuffle=False
                         )
     
     test_dataset_ck = PersianDataset(
                         json_path_test_ck, 
-                        sep_token=sep_token, 
-                        input_format=input_format, 
                         shuffle=False
                         )
     
     test_dataset_ml = PersianDataset(
                         json_path_test_ml, 
-                        sep_token=sep_token, 
-                        input_format=input_format, 
                         shuffle=False
                         )
     
