@@ -1,59 +1,52 @@
-Namespace(adam_epsilon=1e-08, bs=8, epochs=8, eval_bs=8, input_format='0', lr=1e-05, max_clarifications=2, name='xlnet-base-cased', num_choices=2, shuffle=False, warm_up_steps=0, wd=0.0)
+Namespace(adam_epsilon=1e-08, bs=8, epochs=8, eval_bs=8, lr=1e-05, max_clarifications=2, name='xlnet-base-cased', num_choices=2, shuffle=False, use_categories=1, warm_up_steps=0, wd=0.0)
 
-Epoch 1: Loss: Train 0.6976;
-Classification Acc: Train 0.5061;
-Classification Macro F1: Train 0.5061;
+Epoch 1: Loss: Train 0.6976; Val 0.6938
+Classification Acc: Train 0.5061; Val 0.5
+Classification Macro F1: Train 0.5061; Val 0.3333Knowledge source: <DirEntry 'dev_clarified_xlnet-large-cased.jsonl'>
+Instance accuracy: 0.5811
+Average, across knowledge sources, Instance Accuracy: Val 0.5739
 
-Epoch 2: Loss: Train 0.6945;
-Classification Acc: Train 0.5168;
-Classification Macro F1: Train 0.5168;
+Epoch 2: Loss: Train 0.6945; Val 0.6907
+Classification Acc: Train 0.5168; Val 0.5264
+Classification Macro F1: Train 0.5168; Val 0.5136Knowledge source: <DirEntry 'dev_clarified_xlnet-large-cased.jsonl'>
+Instance accuracy: 0.6415
+Average, across knowledge sources, Instance Accuracy: Val 0.6360
 
-Epoch 3: Loss: Train 0.6871;
-Classification Acc: Train 0.5412;
-Classification Macro F1: Train 0.541;
+Epoch 3: Loss: Train 0.6871; Val 0.6863
+Classification Acc: Train 0.5412; Val 0.5408
+Classification Macro F1: Train 0.541; Val 0.5141Knowledge source: <DirEntry 'dev_clarified_xlnet-large-cased.jsonl'>
+Instance accuracy: 0.6387
+Average, across knowledge sources, Instance Accuracy: Val 0.6350
 
-Epoch 4: Loss: Train 0.6671;
-Classification Acc: Train 0.5909;
-Classification Macro F1: Train 0.5906;
+Epoch 4: Loss: Train 0.6671; Val 0.6898
+Classification Acc: Train 0.5909; Val 0.5492
+Classification Macro F1: Train 0.5906; Val 0.539Knowledge source: <DirEntry 'dev_clarified_xlnet-large-cased.jsonl'>
+Instance accuracy: 0.6322
+Average, across knowledge sources, Instance Accuracy: Val 0.6273
 
-Epoch 5: Loss: Train 0.6331;
-Classification Acc: Train 0.6328;
-Classification Macro F1: Train 0.6321;
+Epoch 5: Loss: Train 0.6331; Val 0.7155
+Classification Acc: Train 0.6328; Val 0.5585
+Classification Macro F1: Train 0.6321; Val 0.5485Knowledge source: <DirEntry 'dev_clarified_xlnet-large-cased.jsonl'>
+Instance accuracy: 0.6474
+Average, across knowledge sources, Instance Accuracy: Val 0.6364
 
-Epoch 6: Loss: Train 0.593;
-Classification Acc: Train 0.673;
-Classification Macro F1: Train 0.6724;
+Epoch 6: Loss: Train 0.593; Val 0.7507
+Classification Acc: Train 0.673; Val 0.568
+Classification Macro F1: Train 0.6724; Val 0.5677Knowledge source: <DirEntry 'dev_clarified_xlnet-large-cased.jsonl'>
+Instance accuracy: 0.6262
+Average, across knowledge sources, Instance Accuracy: Val 0.6252
 
-Epoch 7: Loss: Train 0.5518;
-Classification Acc: Train 0.7065;
-Classification Macro F1: Train 0.7058;
-
-Epoch 8: Loss: Train 0.5118;
-Classification Acc: Train 0.7344;
-Classification Macro F1: Train 0.734;
-
-Training time: 4804.991624355316
-Knowledge source: <DirEntry 'dev_clarified_distilgpt2.jsonl'>
-Instance accuracy: 0.6485
-Knowledge source: <DirEntry 'dev_clarified_xlnet-large-cased.jsonl'>
-Instance accuracy: 0.642
-Knowledge source: <DirEntry 'dev_clarified_xlnet-base-cased.jsonl'>
-Instance accuracy: 0.636
-Knowledge source: <DirEntry 'dev_clarified_comet.jsonl'>
-Instance accuracy: 0.6349
-Knowledge source: <DirEntry 'dev_clarified_googlengrams.jsonl'>
+Epoch 7: Loss: Train 0.5518; Val 0.785
+Classification Acc: Train 0.7065; Val 0.5628
+Classification Macro F1: Train 0.7058; Val 0.5628Knowledge source: <DirEntry 'dev_clarified_xlnet-large-cased.jsonl'>
 Instance accuracy: 0.6306
-Knowledge source: <DirEntry 'dev_clarified_gpt2-large.jsonl'>
-Instance accuracy: 0.6447
-Knowledge source: <DirEntry 'dev_clarified_conceptnet.jsonl'>
-Instance accuracy: 0.623
-Knowledge source: <DirEntry 'dev_clarified_gpt2.jsonl'>
+Average, across knowledge sources, Instance Accuracy: Val 0.6252
+
+Epoch 8: Loss: Train 0.5118; Val 0.814
+Classification Acc: Train 0.7344; Val 0.5612
+Classification Macro F1: Train 0.734; Val 0.5596Knowledge source: <DirEntry 'dev_clarified_xlnet-large-cased.jsonl'>
 Instance accuracy: 0.6382
-Knowledge source: <DirEntry 'dev_clarified_gpt2-medium.jsonl'>
-Instance accuracy: 0.6578
-Knowledge source: <DirEntry 'dev_clarified_gpt2-xl.jsonl'>
-Instance accuracy: 0.6442
-Knowledge source: <DirEntry 'dev_clarified_openai-gpt.jsonl'>
-Instance accuracy: 0.636
-Average, across knowledge sources, Instance Accuracy: 0.6396272727272728
+Average, across knowledge sources, Instance Accuracy: Val 0.6362
+
+Training time: 6854.554951906204
 ----------------------------------------------------------------------------------------------------

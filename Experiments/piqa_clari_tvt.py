@@ -71,8 +71,8 @@ if __name__ == "__main__":
                         )
 
 
-    Path("/content/DNLP_project/log/piqa_clarified").mkdir(parents=True, exist_ok=True)
-    lf_name = "/content/DNLP_project/log/piqa_clarified" + name.replace("/", "-") + ".txt"
+    Path("/content/DNLP_project/log/piqa_clarified/").mkdir(parents=True, exist_ok=True)
+    lf_name = "/content/DNLP_project/log/piqa_clarified/" + name.replace("/", "-") + ".txt"
     lf = open(lf_name, "a")
     lf.write(str(args) + "\n\n")
     lf.close()
@@ -91,7 +91,8 @@ if __name__ == "__main__":
             b = "Instance accuracy: {}".format(val_ins_acc)
             #print(b)
             acc_list.append(val_ins_acc)
-        avg = sum(acc_list)/len(acc_list)
+
+        avg = round(sum(acc_list)/len(acc_list),4)
         
         x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
         y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
