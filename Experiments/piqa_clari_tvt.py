@@ -25,7 +25,6 @@ if __name__ == "__main__":
     epochs = args.epochs
     name = args.name
     shuffle = args.shuffle
-    #input_format = args.input_format
 
     model = Model(
         name=name,
@@ -98,7 +97,6 @@ if __name__ == "__main__":
         y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
         y2 = "Classification Macro F1: Train {}; Val {}".format(train_f1, val_f1)
         z = "Average, across knowledge sources, Instance Accuracy: Val {}".format(avg)
-        #z = "Instance Acc: Val {}".format(val_ins_acc)
 
         print(x)
         print(y1)
@@ -127,25 +125,6 @@ if __name__ == "__main__":
     with open(path_pred,"a") as f:
         f.write(str(args) + "\n\n")
         f.write("\n".join(list(test_preds)))
-
-
-    #acc_list = list()
-
-    # lf = open(lf_name, "a")
-    # for dev_loader in dev_dataloader_list:
-    #     a = "Knowledge source: {}".format(dev_loader[0])
-    #     print(a)
-    #     lf.write(a + "\n")
-    #     preds, ins_acc  = test(model, dev_loader[1])
-    #     b = "Instance accuracy: {}".format(ins_acc)
-    #     print(b)
-    #     lf.write(b + "\n")
-    #     acc_list.append(ins_acc)
-    # avg = sum(acc_list)/len(acc_list)
-    # print("Average, across knowledge sources, Instance Accuracy: {}".format(avg))
-    # lf.write("Average, across knowledge sources, Instance Accuracy: {}".format(avg) + "\n")
-    # lf.write("-" * 100 + "\n")
-    # lf.close()
 
     lf = open(lf_name, "a")
     lf.write("-" * 100 + "\n")

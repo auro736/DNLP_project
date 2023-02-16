@@ -24,7 +24,6 @@ if __name__ == "__main__":
     epochs = args.epochs
     name = args.name
     shuffle = args.shuffle
-    #input_format = args.input_format
 
     assert eval_batch_size % args.num_choices == 0, "Eval batch size should be a multiple of num choices, which is 4"
 

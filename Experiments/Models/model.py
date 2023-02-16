@@ -2,11 +2,6 @@ import torch
 import torch.nn as nn
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-from transformers import logging
-
-logging.set_verbosity_warning()
-
-
 
 class Model(nn.Module):
 
@@ -24,19 +19,6 @@ class Model(nn.Module):
         self.model = AutoModelForSequenceClassification.from_pretrained(name)
         
         self.max_length = 512
-        
-        # if "base" in name:
-        #     self.hidden_size = 768
-        # elif "xx-large" in name:
-        #     self.hidden_size = 1536
-        # elif "large" in name:
-        #     self.hidden_size = 1024
-        # elif "tiny" in name:
-        #     self.hidden_size = 128
-        # elif "small" in name:
-        #     self.hidden_size = 768
-        # elif "aristo" in name:
-        #     self.hidden_size = 768
 
         if "base" in name:
             self.hidden_size = 768
