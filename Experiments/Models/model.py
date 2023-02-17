@@ -2,12 +2,15 @@ import torch
 import torch.nn as nn
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-
+'''
+    Model class 
+'''
 class Model(nn.Module):
 
     def __init__(
         self,
         name: str,
+        #number of answer choices of the dataset considered
         num_choices: int
     ):
         super().__init__()

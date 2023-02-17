@@ -1,5 +1,9 @@
 import argparse
 
+
+'''
+    Custom parser 
+'''
 def my_parser():
 
     parser = argparse.ArgumentParser()

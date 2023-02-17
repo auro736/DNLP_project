@@ -26,25 +26,34 @@ if __name__ == "__main__":
     shuffle = args.shuffle
 
     assert eval_batch_size % args.num_choices == 0, "Eval batch size should be a multiple of num choices, which is 4"
-
+    
+    '''
+        Model instantiation
+    '''
     model = Model(
         name=name,
         num_choices=args.num_choices
     ).cuda()
 
-    name_path = name.replace("/","-")
-    model_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/persian/{name_path}.pth"
-    opt_ckp_path = f"/content/DNLP_project/Experiments/Checkpoints/persian/{name_path}_optimizer.pth"
+    # name_path = name.replace("/","-")
 
     sep_token = model.tokenizer.sep_token
 
     optimizer = configure_optimizer(model, args)
+
+    '''
+        Input paths
+    '''
 
     json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
     json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
     json_path_test_lit = "/content/DNLP_project/data/persian/test_lit.jsonl"
     json_path_test_ck = "/content/DNLP_project/data/persian/test_ck.jsonl"
     json_path_test_ml = "/content/DNLP_project/data/persian/test_ml.jsonl"
+
+    '''
+        Configure Dataset objencts and Dataloaders
+    '''
 
     train_dataset = PersianDataset(
                         json_path_train, 

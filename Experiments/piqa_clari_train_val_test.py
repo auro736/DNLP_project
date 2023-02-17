@@ -26,6 +26,10 @@ if __name__ == "__main__":
     name = args.name
     shuffle = args.shuffle
 
+    '''
+        Model instantiation 
+    '''
+
     model = Model(
         name=name,
         num_choices=args.num_choices
@@ -35,9 +39,16 @@ if __name__ == "__main__":
 
     optimizer = configure_optimizer(model, args)
 
+    '''
+        Input paths
+    '''
+
     json_path_train = "/content/DNLP_project/data/clarified_piqa/train.jsonl"
     json_path_test = "/content/DNLP_project/data/clarified_piqa/test_clarified_xlnet-base-cased.jsonl"
 
+    '''
+        Configure Dataset objencts and Dataloaders
+    '''
 
     train_dataset = PiqaDataset(
                         json_path_train, 
@@ -52,6 +63,9 @@ if __name__ == "__main__":
                         collate_fn=train_dataset.collate_fn
                         )
 
+    '''
+        For validation set, since we have 11 different files, use the function create_dev_dl, it return a list of dataloaders 
+    '''
     dev_dataloader_list = create_dev_dl(model)
 
 
@@ -82,29 +96,21 @@ if __name__ == "__main__":
         acc_list = list()
         train_loss, train_acc, train_f1 = train(model, train_loader, optimizer)
 
+        # dev_loader is a tuple of (name of LM, dataloader related)
         for dev_loader in dev_dataloader_list: 
-            # dev_loader is a tuple of (name of LM, dataloader related)
-            a = "Knowledge source: {}".format(dev_loader[0])
-            #print(a)
             val_loss, val_acc, val_ins_acc, val_f1  = eval(model, dev_loader[1])
-            b = "Instance accuracy: {}".format(val_ins_acc)
-            #print(b)
             acc_list.append(val_ins_acc)
 
         avg = round(sum(acc_list)/len(acc_list),4)
         
         x = "Epoch {}: Loss: Train {}; Val {}".format(e + 1, train_loss, val_loss)
-        y1 = "Classification Acc: Train {}; Val {}".format(train_acc, val_acc)
-        y2 = "Classification Macro F1: Train {}; Val {}".format(train_f1, val_f1)
         z = "Average, across knowledge sources, Instance Accuracy: Val {}".format(avg)
 
         print(x)
-        print(y1)
-        print(y2)
         print(z)
 
         lf = open(lf_name, "a")
-        lf.write(x + "\n" + y1 + "\n" + y2 + a + "\n" + b + "\n" + z + "\n\n")
+        lf.write(x + "\n" + z + "\n\n")
         lf.close()
     
     training_time = time.time() - start_time

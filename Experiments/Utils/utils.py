@@ -14,6 +14,10 @@ from Utils.custom_parser import my_parser
 
 args = my_parser()
 
+'''
+    here there are some functions used by all experiments
+'''
+
 def configure_optimizer(model, args, lr = args.lr):
     no_decay = ["bias", "LayerNorm.weight"]
     optimizer_grouped_parameters = [
@@ -44,6 +48,10 @@ def configure_scheduler(optimizer, num_training_steps, args):
     )
     return lr_scheduler
 
+'''
+    Function used to train (fine-tune the LM)
+'''
+
 def train(model, dataloader, optimizer=None):
 
     losses, preds, preds_cls, labels_cls, = [], [], [], []
@@ -73,6 +81,10 @@ def train(model, dataloader, optimizer=None):
 
     return avg_loss, acc, f1
 
+'''
+    Function used in validation
+'''
+
 def eval(model, dataloader):
 
     losses, preds, preds_cls, labels_cls, = [], [], [], []
@@ -100,6 +112,12 @@ def eval(model, dataloader):
     instance_acc = round(accuracy_score(instance_labels, instance_preds), 4)
 
     return avg_loss, acc, instance_acc, f1
+
+'''
+    Function used in testing
+    if we are dealing with persian dataset do predictions and compute accuracy
+    if we are dealin with PIQA clarified only do predictions since we do not have correct answer label
+'''
 
 def test(model, dataloader, ds = 'persian'):
 
