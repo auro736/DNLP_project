@@ -29,7 +29,6 @@ if __name__ == "__main__":
     '''
         Model instantiation 
     '''
-
     model = Model(
         name=name,
         num_choices=args.num_choices
@@ -42,14 +41,12 @@ if __name__ == "__main__":
     '''
         Input paths
     '''
-
     json_path_train = "/content/DNLP_project/data/clarified_piqa/train.jsonl"
     json_path_test = "/content/DNLP_project/data/clarified_piqa/test_clarified_xlnet-base-cased.jsonl"
 
     '''
         Configure Dataset objencts and Dataloaders
     '''
-
     train_dataset = PiqaDataset(
                         json_path_train, 
                         shuffle=True

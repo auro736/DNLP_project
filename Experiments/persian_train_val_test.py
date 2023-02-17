@@ -35,8 +35,6 @@ if __name__ == "__main__":
         num_choices=args.num_choices
     ).cuda()
 
-    # name_path = name.replace("/","-")
-
     sep_token = model.tokenizer.sep_token
 
     optimizer = configure_optimizer(model, args)
@@ -44,7 +42,6 @@ if __name__ == "__main__":
     '''
         Input paths
     '''
-
     json_path_train = "/content/DNLP_project/data/persian/train.jsonl"
     json_path_valid = "/content/DNLP_project/data/persian/valid.jsonl"
     json_path_test_lit = "/content/DNLP_project/data/persian/test_lit.jsonl"
@@ -54,7 +51,6 @@ if __name__ == "__main__":
     '''
         Configure Dataset objencts and Dataloaders
     '''
-
     train_dataset = PersianDataset(
                         json_path_train, 
                         shuffle=True
